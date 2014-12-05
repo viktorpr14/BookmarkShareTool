@@ -1,15 +1,17 @@
-package org.softserveinc.service;
+package org.softserveinc.repository;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.softserveinc.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by vv on 01.12.2014.
  */
 @Repository
+@Transactional
 public class HibernateDAO {
 
     @Autowired

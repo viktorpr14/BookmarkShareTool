@@ -4,14 +4,17 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Component
-@Entity(name = "user")
+@Entity
+@Table(name = "USER")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Integer userId;
     @NotNull
     private String firstName;
     @NotNull
@@ -23,6 +26,11 @@ public class User {
     private String email;
     @NotNull
     private String password;
+    @ManyToMany
+    @JoinTable(name="USERS_ROLES",
+        joinColumns = @JoinColumn(name="USER_ID"),
+        inverseJoinColumns = @JoinColumn(name="ROLE_ID"))
+    private Collection<UserRole> roles = new ArrayList<UserRole>();
 
     public User() {
     }
@@ -35,12 +43,12 @@ public class User {
         this.password = password;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getFirstName() {
@@ -81,5 +89,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Collection<UserRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<UserRole> roles) {
+        this.roles = roles;
     }
 }

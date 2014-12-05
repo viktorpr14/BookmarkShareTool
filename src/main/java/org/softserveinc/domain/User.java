@@ -15,22 +15,34 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer userId;
+
     @NotNull
     private String firstName;
+
     @NotNull
     private String lastName;
+
     @NotNull
     @Column(unique = true)
     private String username;
+
     @Column
     private String email;
+
     @NotNull
     private String password;
+
     @ManyToMany
     @JoinTable(name="USERS_ROLES",
         joinColumns = @JoinColumn(name="USER_ID"),
         inverseJoinColumns = @JoinColumn(name="ROLE_ID"))
     private Collection<UserRole> roles = new ArrayList<UserRole>();
+
+    @ManyToMany
+    @JoinTable(name="USERS_COMMUNITIES",
+        joinColumns = @JoinColumn(name="USER_ID"),
+        inverseJoinColumns = @JoinColumn(name="COMMUNITY_ID"))
+    private Collection<Community> communities = new ArrayList<Community>();
 
     public User() {
     }
@@ -97,5 +109,13 @@ public class User {
 
     public void setRoles(Collection<UserRole> roles) {
         this.roles = roles;
+    }
+
+    public Collection<Community> getCommunities() {
+        return communities;
+    }
+
+    public void setCommunities(Collection<Community> communities) {
+        this.communities = communities;
     }
 }

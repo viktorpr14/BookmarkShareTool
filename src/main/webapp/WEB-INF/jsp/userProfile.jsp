@@ -2,7 +2,7 @@
 <html>
 <body>
 
-<h2>Submitted user Information</h2>
+<h2>User Profile</h2>
 <table>
     <tr>
         <td>First Name</td>

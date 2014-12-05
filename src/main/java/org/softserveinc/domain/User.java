@@ -4,33 +4,45 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Component
-@Entity(name = "user")
+@Entity
+@Table(name = "USER")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Integer userId;
+
     @NotNull
     private String firstName;
+
     @NotNull
     private String lastName;
+
     @NotNull
     @Column(unique = true)
     private String username;
+
     @Column
     private String email;
+
     @NotNull
     private String password;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name="UserRole",
-            joinColumns={@JoinColumn(name="id")},
-            inverseJoinColumns={@JoinColumn(name="role.id")})
-    Set<Role> roles= new HashSet<Role>();
+    @ManyToMany
+    @JoinTable(name="USERS_ROLES",
+        joinColumns = @JoinColumn(name="USER_ID"),
+        inverseJoinColumns = @JoinColumn(name="ROLE_ID"))
+    private Collection<UserRole> roles = new ArrayList<UserRole>();
+
+    @ManyToMany
+    @JoinTable(name="USERS_COMMUNITIES",
+        joinColumns = @JoinColumn(name="USER_ID"),
+        inverseJoinColumns = @JoinColumn(name="COMMUNITY_ID"))
+    private Collection<Community> communities = new ArrayList<Community>();
 
     public User() {
     }
@@ -43,12 +55,12 @@ public class User {
         this.password = password;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getFirstName() {
@@ -89,5 +101,21 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Collection<UserRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<UserRole> roles) {
+        this.roles = roles;
+    }
+
+    public Collection<Community> getCommunities() {
+        return communities;
+    }
+
+    public void setCommunities(Collection<Community> communities) {
+        this.communities = communities;
     }
 }

@@ -29,11 +29,9 @@ public class AccessController {
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public String addUser(User user, Model model) {
-        model.addAttribute(user);
 
         userService.saveUserIntoDB(user);
-
-        return "redirect:/userProfile";
+        return "redirect:/userProfile/"+user.getUsername();
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)

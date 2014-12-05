@@ -18,5 +18,9 @@ public class UserService {
         hibernateDAO.saveUserIntoDB(user);
     }
 
+    public User findUserByUsername(String username) {
+        return hibernateDAO.findUserByUsername(username);
+    }
+
 
 }

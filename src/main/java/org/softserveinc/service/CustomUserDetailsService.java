@@ -1,5 +1,7 @@
 package org.softserveinc.service;
 
+import org.softserveinc.domain.UserRole;
+import org.softserveinc.repository.HibernateDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,24 +10,19 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
-@Service
-@Transactional(readOnly = true)
+@Service("customUserDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
     private HibernateDAO hibernateDAO;
 
-    /**
-     * Returns a populated {@link org.springframework.security.core.userdetails.UserDetails} object.
-     * The username is first retrieved from the database and then mapped to
-     * a {@link org.springframework.security.core.userdetails.UserDetails} object.
-     */
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         org.softserveinc.domain.User domainUser = hibernateDAO.findUserByUsername(username);
@@ -37,47 +34,19 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         return new User(
                 domainUser.getUsername(),
-                domainUser.getPassword().toLowerCase(),
+                domainUser.getPassword(),
                 enabled,
                 accountNonExpired,
                 credentialsNonExpired,
                 accountNonLocked,
-                getAuthorities(domainUser.getRole().getRole()));
+                getGrantedAuthorities(domainUser.getRoles()));
     }
 
-    /**
-     * Retrieves a collection of {@link org.springframework.security.core.GrantedAuthority} based on a numerical role
-     * @param role the numerical role
-     * @return a collection of {@link org.springframework.security.core.GrantedAuthority
-     */
-    public Collection<? extends GrantedAuthority> getAuthorities(Integer role) {
-        List<GrantedAuthority> authList = getGrantedAuthorities(getRoles(role));
-        return authList;
-    }
-
-    public List<String> getRoles(Integer role) {
-        List<String> roles = new ArrayList<String>();
-
-        switch (role.intValue()){
-            case 1:
-                roles.add("ROLE_ADMIN");
-                break;
-
-            case 2:
-                roles.add("ROLE_USER");
-                break;
-
-            default:
-                roles.add("ROLE_ANONYMOUS");
-                break;
-        }
-        return roles;
-    }
-
-    public static List<GrantedAuthority> getGrantedAuthorities(List<String> roles) {
+    public static List<GrantedAuthority> getGrantedAuthorities(Collection<UserRole> roles) {
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        for (String role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role));
+        Iterator<UserRole> roleIterator = roles.iterator();
+        while (roleIterator.hasNext()) {
+            authorities.add(new SimpleGrantedAuthority(roleIterator.next().getRole()));
         }
         return authorities;
     }

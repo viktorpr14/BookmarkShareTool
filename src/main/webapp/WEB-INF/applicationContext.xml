@@ -20,9 +20,6 @@
 		<property name="maxActive" value="10"/>
 	</bean>
 
-    <bean id="userDetailsService" class="org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
 
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"> <!--.hibernate3.annotation.AnnotationSessionFactoryBean">-->
 		<property name="dataSource" ref="dataSource"/>
@@ -39,23 +36,22 @@
 
 	<!-- Activates various annotations to be detected in bean classes -->
 	<context:annotation-config />
+    
 	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-
-
-    <!-- Activates various annotations to be detected in bean classes -->
-    <context:annotation-config/>
 
     <!-- Scans the classpath for annotated components that will be auto-registered as Spring beans.
      For example @Controller and @Service. Make sure to set the correct base-package -->
     <context:component-scan base-package="org.softserveinc"/>
 
 
-    <!-- Imports datasource configuration -->
+    <!-- Imports security configuration -->
+    <import resource="bookmarks-security.xml"/>
+
     <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
           p:prefix="/WEB-INF/jsp/" p:suffix=".jsp"/>
 
-    <import resource="bookmarks-security.xml"/>
+
 
 </beans>

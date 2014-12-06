@@ -16,6 +16,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
     @RequestMapping(value = "/userProfile/{username}", method = RequestMethod.GET)
     public String showUserProfile(@PathVariable String username, Model model) {
 
@@ -28,4 +29,5 @@ public class UserController {
         model.addAttribute(userService.findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
         return "userProfile";
     }
+
 }

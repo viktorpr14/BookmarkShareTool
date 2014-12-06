@@ -1,5 +1,8 @@
 package org.softserveinc.domain;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.util.Collection;
 
@@ -15,6 +18,7 @@ public class UserRole {
     private Integer roleId;
     private String role;
     @ManyToMany(mappedBy = "roles")
+//    @NotFound(action = NotFoundAction.IGNORE)
     private Collection<User> users;
 
     public Integer getRoleId() {

@@ -21,5 +21,8 @@
         <td>${user.email}</td>
     </tr>
 </table>
+
+<a href="createCommunity">Create Community</a>
+
 </body>
 </html>

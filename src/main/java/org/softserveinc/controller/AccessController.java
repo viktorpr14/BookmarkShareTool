@@ -21,6 +21,11 @@ public class AccessController {
         return "access/login";
     }
 
+    @RequestMapping(value = "/denied")
+    public String denied() {
+        return "access/denied";
+    }
+
     @RequestMapping(value = "/login/failure")
     public String loginFailure() {
         String message = "Login Failure!";

@@ -1,16 +1,21 @@
 package org.softserveinc.domain;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 @Component
 @Entity
 @Table(name = "USER")
-public class User {
+public class User implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,7 +37,7 @@ public class User {
     @NotNull
     private String password;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="USERS_ROLES",
         joinColumns = @JoinColumn(name="USER_ID"),
         inverseJoinColumns = @JoinColumn(name="ROLE_ID"))
@@ -46,6 +51,9 @@ public class User {
 
     public User() {
     }
+
+    @Transient
+    private Collection<? extends GrantedAuthority> authorities;
 
     public User(String firstName, String lastName, String username, String email, String password) {
         this.firstName = firstName;
@@ -117,5 +125,39 @@ public class User {
 
     public void setCommunities(Collection<Community> communities) {
         this.communities = communities;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Collection<UserRole> roles) {
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        Iterator<UserRole> roleIterator = roles.iterator();
+        while (roleIterator.hasNext()) {
+            authorities.add(new SimpleGrantedAuthority(roleIterator.next().getRole()));
+        }
+        this.authorities = authorities;
     }
 }

@@ -19,8 +19,27 @@
 
         <access-denied-handler error-page="/access/denied"/>
     </http>
+
+
+    <beans:bean id="customUserDetailsService" class="org.softserveinc.service.CustomUserDetailsService"/>
+
+    <beans:bean id="daoAuthenticationProvider"
+                class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <beans:property name="userDetailsService" ref="customUserDetailsService"/>
+    </beans:bean>
+
+    <beans:bean id="authenticationManager"
+                class="org.springframework.security.authentication.ProviderManager">
+        <beans:property name="providers">
+            <beans:list>
+                <beans:ref local="daoAuthenticationProvider"/>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
     <authentication-manager>
         <authentication-provider user-service-ref="customUserDetailsService">
+            <password-encoder hash="plaintext"/>
         </authentication-provider>
     </authentication-manager>
+
 </beans:beans>

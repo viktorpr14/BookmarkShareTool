@@ -37,7 +37,7 @@ public class HibernateDAO {
     }
 
     public User findUserByUsername(String username) {
-        List<User> userList =new ArrayList<>();
+        List<User> userList =new ArrayList<User>();
         userList= sessionFactory.openSession().createQuery("from User where username=?")
                 .setParameter(0, username).list();
         if(userList.size()>0)

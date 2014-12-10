@@ -25,7 +25,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter{
         if (null == modelAndView){
             return;
         }
-    modelAndView.addObject("domainUser",customUserDetailsService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+    modelAndView.addObject(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
     }
 
 

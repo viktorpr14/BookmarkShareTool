@@ -37,28 +37,28 @@
 
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 
-	<!-- Activates various annotations to be detected in bean classes -->
-	<context:annotation-config />
-    
 	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
+
+    <!-- Activates various annotations to be detected in bean classes -->
+    <context:annotation-config/>
 
     <!-- Scans the classpath for annotated components that will be auto-registered as Spring beans.
      For example @Controller and @Service. Make sure to set the correct base-package -->
     <context:component-scan base-package="org.softserveinc"/>
 
+    <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+          p:prefix="/WEB-INF/jsp/" p:suffix=".jsp"/>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/userProfile"/>
+            <bean class="org.softserveinc.interceptor.UserInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
     <!-- Imports security configuration -->
     <import resource="bookmarks-security.xml"/>
 
-    <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
-          p:prefix="/WEB-INF/jsp/" p:suffix=".jsp"/>
-    <mvc:interceptors>
-        <mvc:interceptor>
-            <mvc:mapping path="/userProfile"/>
-            <mvc:mapping path="/userProfile"/>
-            <bean class="org.softserveinc.interceptor.SecurityInterceptor"/>
-        </mvc:interceptor>
-    </mvc:interceptors>
 </beans>

@@ -33,7 +33,7 @@ public class AccessController {
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String addUser(User user, Model model) {
+    public String addUser(User user) {
 
         userService.saveUserIntoDB(user);
         return "redirect:/userProfile/"+user.getUsername();

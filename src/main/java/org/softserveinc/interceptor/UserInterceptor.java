@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * Time: 16:11
  * To change this template use File | Settings | File Templates.
  */
-public class SecurityInterceptor extends HandlerInterceptorAdapter{
+public class UserInterceptor extends HandlerInterceptorAdapter{
 
     @Autowired
     CustomUserDetailsService customUserDetailsService;

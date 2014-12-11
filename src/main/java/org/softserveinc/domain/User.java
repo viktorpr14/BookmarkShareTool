@@ -152,12 +152,7 @@ public class User implements UserDetails{
         return authorities;
     }
 
-    public void setAuthorities(Collection<UserRole> roles) {
-        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        Iterator<UserRole> roleIterator = roles.iterator();
-        while (roleIterator.hasNext()) {
-            authorities.add(new SimpleGrantedAuthority(roleIterator.next().getRole()));
-        }
+    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
         this.authorities = authorities;
     }
 }

@@ -25,8 +25,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/userProfile", method = RequestMethod.GET)
-    public String showUserProfile( Model model) {
-      /* model.addAttribute(SecurityContextHolder.getContext().getAuthentication().getPrincipal());*/
+    public String showUserProfile() {
         return "userProfile";
     }
 

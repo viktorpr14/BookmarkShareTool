@@ -24,7 +24,7 @@
 	</bean>
 
 
-	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"> <!--.hibernate3.annotation.AnnotationSessionFactoryBean">-->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"/>
 		<property name="packagesToScan" value="org.softserveinc.domain"/>
 		<property name="hibernateProperties">
@@ -47,6 +47,10 @@
     <!-- Scans the classpath for annotated components that will be auto-registered as Spring beans.
      For example @Controller and @Service. Make sure to set the correct base-package -->
     <context:component-scan base-package="org.softserveinc"/>
+
+
+    <!-- Imports security configuration -->
+    <import resource="bookmarks-security.xml"/>
 
     <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
           p:prefix="/WEB-INF/jsp/" p:suffix=".jsp"/>

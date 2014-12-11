@@ -1,13 +1,18 @@
 package org.softserveinc.domain;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 @Entity
@@ -34,17 +39,21 @@ public class User implements UserDetails{
     @NotNull
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name="USERS_ROLES",
-        joinColumns = @JoinColumn(name="USER_ID"),
-        inverseJoinColumns = @JoinColumn(name="ROLE_ID"))
-    private Collection<UserRole> roles = new ArrayList<UserRole>();
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(name="USERS_ROLES",
+//        joinColumns = @JoinColumn(name="USER_ID"),
+//        inverseJoinColumns = @JoinColumn(name="ROLE_ID"))
+    private Set<UserRole> roles = new HashSet<UserRole>();
 
-    @ManyToMany
-    @JoinTable(name="USERS_COMMUNITIES",
-        joinColumns = @JoinColumn(name="USER_ID"),
-        inverseJoinColumns = @JoinColumn(name="COMMUNITY_ID"))
-    private Collection<Community> communities = new ArrayList<Community>();
+//    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @NotFound(action = NotFoundAction.IGNORE)
+//    @JoinTable(name="USERS_COMMUNITIES",
+//        joinColumns = @JoinColumn(name="USER_ID"),
+//        inverseJoinColumns = @JoinColumn(name="COMMUNITY_ID"))
+//    private Set<Community> communities = new HashSet<Community>();
+
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "pk.user", cascade = CascadeType.ALL)
+    private Set<UserCommunity> usersCommunities = new HashSet<UserCommunity>();
 
     public User() {
     }
@@ -60,6 +69,9 @@ public class User implements UserDetails{
         this.password = password;
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "USER_ID")
     public Integer getUserId() {
         return userId;
     }
@@ -108,21 +120,26 @@ public class User implements UserDetails{
         this.email = email;
     }
 
-    public Collection<UserRole> getRoles() {
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name="USERS_ROLES",
+            joinColumns = @JoinColumn(name="USER_ID"),
+            inverseJoinColumns = @JoinColumn(name="ROLE_ID"))
+    public Set<UserRole> getRoles() {
         return roles;
     }
 
-    public void setRoles(Collection<UserRole> roles) {
+    public void setRoles(Set<UserRole> roles) {
         this.roles = roles;
     }
 
-    public Collection<Community> getCommunities() {
-        return communities;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "pk.user", cascade = CascadeType.ALL)
+    public Set<UserCommunity> getUsersCommunities() {
+        return usersCommunities;
     }
 
-    public void setCommunities(Collection<Community> communities) {
-        this.communities = communities;
-    }
+    public void setUsersCommunities(Set<UserCommunity> usersCommunities) {
+        this.usersCommunities = usersCommunities;
+     }
 
     @Override
     public boolean isAccountNonExpired() {

@@ -27,4 +27,8 @@ public class UserService {
     public void saveCommunityIntoDB(Community community) {
         hibernateDAO.saveCommunityIntoDB(community);
     }
+
+    public void updateUserInDB(User user) {
+        hibernateDAO.updateUserInDB(user);
+    }
 }

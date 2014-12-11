@@ -13,9 +13,6 @@ import java.util.Set;
 @Table(name = "USER")
 public class User implements UserDetails{
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-//    @Column(name = "USER_ID")
     private Integer userId;
 
     @NotNull
@@ -34,20 +31,8 @@ public class User implements UserDetails{
     @NotNull
     private String password;
 
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(name="USERS_ROLES",
-//        joinColumns = @JoinColumn(name="USER_ID"),
-//        inverseJoinColumns = @JoinColumn(name="ROLE_ID"))
     private Set<UserRole> roles = new HashSet<UserRole>();
 
-//    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @NotFound(action = NotFoundAction.IGNORE)
-//    @JoinTable(name="USERS_COMMUNITIES",
-//        joinColumns = @JoinColumn(name="USER_ID"),
-//        inverseJoinColumns = @JoinColumn(name="COMMUNITY_ID"))
-//    private Set<Team> communities = new HashSet<Team>();
-
-//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "pk.user", cascade = CascadeType.ALL)
     private Set<UserTeam> usersTeams = new HashSet<UserTeam>();
 
     public User() {

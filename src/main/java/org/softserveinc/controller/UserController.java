@@ -38,7 +38,7 @@ public class UserController {
         model.addAttribute(user);
 
         userService.saveUserIntoDB(user);
-        
+
         return "userProfile";
     }
 
@@ -62,12 +62,10 @@ public class UserController {
     @RequestMapping(value = "/creatingTeam", method = RequestMethod.GET)
     public String getCreateTeamPage(Model model) {
 
-//        System.out.println(user.getUserId());
-//        System.out.println(user.getFirstName());
-//        System.out.println(user.getEmail());
         model.addAttribute("team", new Team());
         return "creatingTeam";
     }
+
     @RequestMapping(value = "/creatingTeam", method = RequestMethod.POST)
     public String addTeamIntoDB(Team team, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()){
@@ -76,39 +74,8 @@ public class UserController {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
-        System.out.println(name);
-
-//        Map<String, Object> map = model.asMap();
-//        for (String s : map.keySet()) {
-//            System.out.println("Key = " + s);
-//            System.out.println("Value = " + map.get(s));
-//            System.out.println();
-//        }
 
         User user = userService.findUserByUsername(name);
-
-//        System.out.println(user.getUserId());
-//        System.out.println(user.getFirstName());
-//        System.out.println(user.getEmail());
-
-        //Collection<Team> usersCommunities = user.getUsersTeams().;
-//        for (Team usersCommunity : usersCommunities) {
-//            System.out.println(usersCommunity.getTeamName());
-//        }
-
-        //usersCommunities.add(team);
-
-//        System.out.println("------------------");
-//        for (Team usersCommunity : usersCommunities) {
-//            System.out.println(usersCommunity.getTeamName());
-//        }
-//        System.out.println("------------------");
-
-        //userService.updateUserInDB(user);
-
-//        System.out.println("OK!!!!!!!!!!");
-
-//        userService.saveTeamIntoDB(team);
 
         userService.saveTeamIntoDB(team);
 
@@ -126,5 +93,4 @@ public class UserController {
 
         return "teamProfile";
     }
-
 }

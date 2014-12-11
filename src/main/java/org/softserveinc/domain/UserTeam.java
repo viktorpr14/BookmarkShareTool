@@ -15,24 +15,12 @@ import java.io.Serializable;
 })
 public class UserTeam implements Serializable {
 
-//    @EmbeddedId
     private UserTeamId pk = new UserTeamId();
-
-//    @Column(name = "IS_MEMBER")
     private boolean isMember;
 
     public UserTeam() {
 
     }
-
-//    @EmbeddedId
-//    public UserTeamId getpKey() {
-//        return pKey;
-//    }
-//
-//    public void setpKey(UserTeamId pKey) {
-//        this.pKey = pKey;
-//    }
 
     @EmbeddedId
     public UserTeamId getPk() {
@@ -68,25 +56,5 @@ public class UserTeam implements Serializable {
 
     public void setTeam(Team team) {
         getPk().setTeam(team);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        UserTeam that = (UserTeam) o;
-
-        if (isMember != that.isMember) return false;
-        if (getPk() != null ? !getPk().equals(that.getPk()) : that.getPk() != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = pk != null ? pk.hashCode() : 0;
-        result = 31 * result + (isMember ? 1 : 0);
-        return result;
     }
 }

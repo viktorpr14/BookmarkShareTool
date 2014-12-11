@@ -12,18 +12,8 @@ import java.util.Set;
 @Table(name = "TEAM")
 public class Team implements Serializable{
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-//    @Column(name = "COMMUNITY_ID")
     private Integer teamId;
-
     private String teamName;
-
-//    @ManyToMany(mappedBy = "communities")
-//    @NotFound(action = NotFoundAction.IGNORE)
-//    private Set<User> users = new HashSet<User>();
-
-//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "pk.community")
     private Set<UserTeam> usersTeams = new HashSet<UserTeam>();
 
     public Team() {
@@ -66,12 +56,4 @@ public class Team implements Serializable{
     public void setUsersTeams(Set<UserTeam> usersTeams) {
         this.usersTeams = usersTeams;
     }
-
-    //    public Set<User> getUsers() {
-//        return users;
-//    }
-//
-//    public void setUsers(Set<User> users) {
-//        this.users = users;
-//    }
 }

@@ -8,13 +8,13 @@ import java.io.Serializable;
  * Created by vv on 09.12.2014.
  */
 @Embeddable
-public class UserCommunityId implements Serializable{
+public class UserTeamId implements Serializable{
 
 //    @ManyToOne
     private User user;
 
 //    @ManyToOne
-    private Community community;
+    private Team team;
 
     @ManyToOne
     public User getUser() {
@@ -26,12 +26,12 @@ public class UserCommunityId implements Serializable{
     }
 
     @ManyToOne
-    public Community getCommunity() {
-        return community;
+    public Team getTeam() {
+        return team;
     }
 
-    public void setCommunity(Community community) {
-        this.community = community;
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     @Override
@@ -39,9 +39,9 @@ public class UserCommunityId implements Serializable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UserCommunityId that = (UserCommunityId) o;
+        UserTeamId that = (UserTeamId) o;
 
-        if (community != null ? !community.equals(that.community) : that.community != null) return false;
+        if (team != null ? !team.equals(that.team) : that.team != null) return false;
         if (user != null ? !user.equals(that.user) : that.user != null) return false;
 
         return true;
@@ -50,7 +50,7 @@ public class UserCommunityId implements Serializable{
     @Override
     public int hashCode() {
         int result = user != null ? user.hashCode() : 0;
-        result = 31 * result + (community != null ? community.hashCode() : 0);
+        result = 31 * result + (team != null ? team.hashCode() : 0);
         return result;
     }
 }

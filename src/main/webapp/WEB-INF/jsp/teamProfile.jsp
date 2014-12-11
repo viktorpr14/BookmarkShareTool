@@ -1,14 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Community Profile</title>
+    <title>Team Profile</title>
 </head>
 <body>
 
   <table>
     <tr>
-      <td>Community Name</td>
-      <td>${community.communityName}</td>
+      <td>Team Name</td>
+      <td>${team.teamName}</td>
     </tr>
 
   </table>

@@ -8,38 +8,38 @@ import java.io.Serializable;
  */
 
 @Entity
-@Table(name="USERS_COMMUNITIES")
+@Table(name="USERS_TEAMS")
 @AssociationOverrides({
         @AssociationOverride(name = "pk.user", joinColumns = @JoinColumn(name = "USER_ID")),
-        @AssociationOverride(name = "pk.community", joinColumns = @JoinColumn(name = "COMMUNITY_ID"))
+        @AssociationOverride(name = "pk.team", joinColumns = @JoinColumn(name = "TEAM_ID"))
 })
-public class UserCommunity implements Serializable {
+public class UserTeam implements Serializable {
 
 //    @EmbeddedId
-    private UserCommunityId pk = new UserCommunityId();
+    private UserTeamId pk = new UserTeamId();
 
 //    @Column(name = "IS_MEMBER")
     private boolean isMember;
 
-    public UserCommunity() {
+    public UserTeam() {
 
     }
 
 //    @EmbeddedId
-//    public UserCommunityId getpKey() {
+//    public UserTeamId getpKey() {
 //        return pKey;
 //    }
 //
-//    public void setpKey(UserCommunityId pKey) {
+//    public void setpKey(UserTeamId pKey) {
 //        this.pKey = pKey;
 //    }
 
     @EmbeddedId
-    public UserCommunityId getPk() {
+    public UserTeamId getPk() {
         return pk;
     }
 
-    public void setPk(UserCommunityId pk) {
+    public void setPk(UserTeamId pk) {
         this.pk = pk;
     }
 
@@ -62,12 +62,12 @@ public class UserCommunity implements Serializable {
     }
 
     @Transient
-    public Community getCommunity() {
-        return getPk().getCommunity();
+    public Team getTeam() {
+        return getPk().getTeam();
     }
 
-    public void setCommunity(Community community) {
-        getPk().setCommunity(community);
+    public void setTeam(Team team) {
+        getPk().setTeam(team);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class UserCommunity implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UserCommunity that = (UserCommunity) o;
+        UserTeam that = (UserTeam) o;
 
         if (isMember != that.isMember) return false;
         if (getPk() != null ? !getPk().equals(that.getPk()) : that.getPk() != null) return false;

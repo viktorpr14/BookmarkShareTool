@@ -22,7 +22,7 @@
     </tr>
 </table>
 
-<a href="creatingCommunity">Create Community</a>
+<a href="creatingTeam">Create Team</a>
 
 </body>
 </html>

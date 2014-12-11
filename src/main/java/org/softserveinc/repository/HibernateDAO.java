@@ -3,13 +3,12 @@ package org.softserveinc.repository;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.softserveinc.domain.Community;
+import org.softserveinc.domain.Team;
 import org.softserveinc.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,15 +40,15 @@ public class HibernateDAO {
         session.save(user);
     }
 
-    public void saveCommunityIntoDB(Community community) {
+    public void saveTeamIntoDB(Team team) {
 //        Session session = getSessionFactory().openSession();
 //        session.beginTransaction();
-//        session.save(community);
+//        session.save(team);
 //        session.getTransaction().commit();
 //        session.close();
 
         Session session = getSessionFactory().getCurrentSession();
-        session.save(community);
+        session.save(team);
     }
 
     public User findUserByUsername(String username) {

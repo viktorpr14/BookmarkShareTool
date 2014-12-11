@@ -1,12 +1,11 @@
 package org.softserveinc.controller;
 
-import org.softserveinc.domain.Community;
+import org.softserveinc.domain.Team;
 import org.softserveinc.domain.User;
-import org.softserveinc.domain.UserCommunity;
+import org.softserveinc.domain.UserTeam;
 import org.softserveinc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,27 +59,31 @@ public class UserController {
         model.addAttribute(userService.findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
         return "userProfile";
     }
-    @RequestMapping(value = "/creatingCommunity", method = RequestMethod.GET)
-    public String getCreateCommunityPage(Model model) {
-        model.addAttribute("community", new Community());
-        return "creatingCommunity";
+    @RequestMapping(value = "/creatingTeam", method = RequestMethod.GET)
+    public String getCreateTeamPage(Model model) {
+
+//        System.out.println(user.getUserId());
+//        System.out.println(user.getFirstName());
+//        System.out.println(user.getEmail());
+        model.addAttribute("team", new Team());
+        return "creatingTeam";
     }
-    @RequestMapping(value = "/createCommunity", method = RequestMethod.POST)
-    public String addCommunityIntoDB(Community community, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            return "creatingCommunity";
+    @RequestMapping(value = "/creatingTeam", method = RequestMethod.POST)
+    public String addTeamIntoDB(Team team, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()){
+            return "creatingTeam";
         }
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         System.out.println(name);
 
-        Map<String, Object> map = model.asMap();
-        for (String s : map.keySet()) {
-            System.out.println("Key = " + s);
-            System.out.println("Value = " + map.get(s));
-            System.out.println();
-        }
+//        Map<String, Object> map = model.asMap();
+//        for (String s : map.keySet()) {
+//            System.out.println("Key = " + s);
+//            System.out.println("Value = " + map.get(s));
+//            System.out.println();
+//        }
 
         User user = userService.findUserByUsername(name);
 
@@ -88,16 +91,16 @@ public class UserController {
 //        System.out.println(user.getFirstName());
 //        System.out.println(user.getEmail());
 
-        //Collection<Community> usersCommunities = user.getUsersCommunities().;
-//        for (Community usersCommunity : usersCommunities) {
-//            System.out.println(usersCommunity.getCommunityName());
+        //Collection<Team> usersCommunities = user.getUsersTeams().;
+//        for (Team usersCommunity : usersCommunities) {
+//            System.out.println(usersCommunity.getTeamName());
 //        }
 
-        //usersCommunities.add(community);
+        //usersCommunities.add(team);
 
 //        System.out.println("------------------");
-//        for (Community usersCommunity : usersCommunities) {
-//            System.out.println(usersCommunity.getCommunityName());
+//        for (Team usersCommunity : usersCommunities) {
+//            System.out.println(usersCommunity.getTeamName());
 //        }
 //        System.out.println("------------------");
 
@@ -105,23 +108,23 @@ public class UserController {
 
 //        System.out.println("OK!!!!!!!!!!");
 
-//        userService.saveCommunityIntoDB(community);
+//        userService.saveTeamIntoDB(team);
 
-        userService.saveCommunityIntoDB(community);
+        userService.saveTeamIntoDB(team);
 
-        UserCommunity userCommunity = new UserCommunity();
-        userCommunity.setMember(true);
-        userCommunity.setUser(user);
-        userCommunity.setCommunity(community);
+        UserTeam userTeam = new UserTeam();
+        userTeam.setMember(true);
+        userTeam.setUser(user);
+        userTeam.setTeam(team);
 
-        community.getUsersCommunities().add(userCommunity);
-        user.getUsersCommunities().add(userCommunity);
+        team.getUsersTeams().add(userTeam);
+        user.getUsersTeams().add(userTeam);
 
         userService.updateUserInDB(user);
 
-        model.addAttribute(community);
+        model.addAttribute(team);
 
-        return "communityProfile";
+        return "teamProfile";
     }
 
 }

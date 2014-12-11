@@ -1,16 +1,10 @@
 package org.softserveinc.domain;
 
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,8 +13,9 @@ import java.util.Set;
 @Table(name = "USER")
 public class User implements UserDetails{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @Column(name = "USER_ID")
     private Integer userId;
 
     @NotNull
@@ -50,10 +45,10 @@ public class User implements UserDetails{
 //    @JoinTable(name="USERS_COMMUNITIES",
 //        joinColumns = @JoinColumn(name="USER_ID"),
 //        inverseJoinColumns = @JoinColumn(name="COMMUNITY_ID"))
-//    private Set<Community> communities = new HashSet<Community>();
+//    private Set<Team> communities = new HashSet<Team>();
 
 //    @OneToMany(fetch = FetchType.EAGER, mappedBy = "pk.user", cascade = CascadeType.ALL)
-    private Set<UserCommunity> usersCommunities = new HashSet<UserCommunity>();
+    private Set<UserTeam> usersTeams = new HashSet<UserTeam>();
 
     public User() {
     }
@@ -133,17 +128,12 @@ public class User implements UserDetails{
     }
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "pk.user", cascade = CascadeType.ALL)
-    public Set<UserCommunity> getUsersCommunities() {
-        return usersCommunities;
+    public Set<UserTeam> getUsersTeams() {
+        return usersTeams;
     }
 
-    public void setUsersCommunities(Set<UserCommunity> usersCommunities) {
-        this.usersCommunities = usersCommunities;
-     }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
+    public void setUsersTeams(Set<UserTeam> usersTeams) {
+        this.usersTeams = usersTeams;
     }
 
     @Override

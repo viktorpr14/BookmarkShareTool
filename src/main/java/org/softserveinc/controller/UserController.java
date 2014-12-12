@@ -20,22 +20,5 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String addUser(@Valid User user, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()){
-            return "signup";
-        }
-        model.addAttribute(user);
 
-        userService.saveUserIntoDB(user);
-        
-        return "userProfile";
-    }
-
-    @RequestMapping(value = "/signup", method = RequestMethod.GET)
-    public String getSingUpPage(Model model) {
-        model.addAttribute("user", new User());
-        return "signup";
-
-    }
 }

@@ -4,6 +4,8 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 @Entity(name = "user")
@@ -23,6 +25,12 @@ public class User {
     private String email;
     @NotNull
     private String password;
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name="UserRole",
+            joinColumns={@JoinColumn(name="id")},
+            inverseJoinColumns={@JoinColumn(name="role.id")})
+    Set<Role> roles= new HashSet<Role>();
 
     public User() {
     }

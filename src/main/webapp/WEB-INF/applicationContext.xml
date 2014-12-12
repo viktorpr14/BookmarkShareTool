@@ -20,6 +20,10 @@
 		<property name="maxActive" value="10"/>
 	</bean>
 
+    <bean id="userDetailsService" class="org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"> <!--.hibernate3.annotation.AnnotationSessionFactoryBean">-->
 		<property name="dataSource" ref="dataSource"/>
 		<property name="packagesToScan" value="org.softserveinc.domain"/>
@@ -33,6 +37,8 @@
 
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 
+	<!-- Activates various annotations to be detected in bean classes -->
+	<context:annotation-config />
 	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>

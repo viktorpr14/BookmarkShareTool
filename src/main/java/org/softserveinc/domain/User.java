@@ -33,8 +33,6 @@ public class User implements UserDetails{
 
     private Set<UserRole> roles = new HashSet<UserRole>();
 
-    private Set<UserTeam> usersTeams = new HashSet<UserTeam>();
-
     public User() {
     }
 
@@ -51,7 +49,6 @@ public class User implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "USER_ID")
     public Integer getUserId() {
         return userId;
     }
@@ -102,8 +99,8 @@ public class User implements UserDetails{
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="USERS_ROLES",
-            joinColumns = @JoinColumn(name="USER_ID"),
-            inverseJoinColumns = @JoinColumn(name="ROLE_ID"))
+            joinColumns = @JoinColumn(name="userId"),
+            inverseJoinColumns = @JoinColumn(name="roleId"))
     public Set<UserRole> getRoles() {
         return roles;
     }

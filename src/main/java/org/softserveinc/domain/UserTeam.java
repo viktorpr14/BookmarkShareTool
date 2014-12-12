@@ -1,7 +1,6 @@
 package org.softserveinc.domain;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 /**
  * Created by vv on 09.12.2014.
@@ -9,29 +8,45 @@ import java.io.Serializable;
 
 @Entity
 @Table(name="USERS_TEAMS")
-@AssociationOverrides({
-        @AssociationOverride(name = "pk.user", joinColumns = @JoinColumn(name = "USER_ID")),
-        @AssociationOverride(name = "pk.team", joinColumns = @JoinColumn(name = "TEAM_ID"))
-})
-public class UserTeam implements Serializable {
+public class UserTeam {
 
-    private UserTeamId pk = new UserTeamId();
+    private Integer userTeamId;
     private boolean isMember;
+    private Team team;
+    private Integer userId;
 
     public UserTeam() {
 
     }
 
-    @EmbeddedId
-    public UserTeamId getPk() {
-        return pk;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Integer getUserTeamId() {
+        return userTeamId;
     }
 
-    public void setPk(UserTeamId pk) {
-        this.pk = pk;
+    public void setUserTeamId(Integer userTeamId) {
+        this.userTeamId = userTeamId;
     }
 
-    @Column(name = "IS_MEMBER")
+    @ManyToOne
+    @JoinColumn(name="teamId")
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
     public boolean isMember() {
         return isMember;
     }
@@ -40,21 +55,4 @@ public class UserTeam implements Serializable {
         this.isMember = isMember;
     }
 
-    @Transient
-    public User getUser() {
-        return getPk().getUser();
-    }
-
-    public void setUser(User user) {
-        getPk().setUser(user);
-    }
-
-    @Transient
-    public Team getTeam() {
-        return getPk().getTeam();
-    }
-
-    public void setTeam(Team team) {
-        getPk().setTeam(team);
-    }
 }

@@ -1,7 +1,6 @@
 package org.softserveinc.domain;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,7 +9,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "TEAM")
-public class Team implements Serializable{
+public class Team {
 
     private Integer teamId;
     private String teamName;
@@ -31,7 +30,6 @@ public class Team implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "TEAM_ID")
     public Integer getTeamId() {
         return teamId;
     }
@@ -48,7 +46,7 @@ public class Team implements Serializable{
         this.teamName = teamName;
     }
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "pk.team")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "team")
     public Set<UserTeam> getUsersTeams() {
         return usersTeams;
     }

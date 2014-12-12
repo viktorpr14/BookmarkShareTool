@@ -68,7 +68,7 @@ public class UserController {
 
     @RequestMapping(value = "/creatingTeam", method = RequestMethod.POST)
     public String addTeamIntoDB(Team team, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             return "creatingTeam";
         }
 
@@ -81,16 +81,16 @@ public class UserController {
 
         UserTeam userTeam = new UserTeam();
         userTeam.setMember(true);
-        userTeam.setUser(user);
+        userTeam.setUserId(user.getUserId());
         userTeam.setTeam(team);
 
         team.getUsersTeams().add(userTeam);
-        user.getUsersTeams().add(userTeam);
 
-        userService.updateUserInDB(user);
+        userService.saveUserTeamIntoDB(userTeam);
 
         model.addAttribute(team);
 
         return "teamProfile";
     }
+
 }

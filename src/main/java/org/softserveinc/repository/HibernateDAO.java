@@ -5,6 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.softserveinc.domain.Team;
 import org.softserveinc.domain.User;
+import org.softserveinc.domain.UserTeam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,11 +56,8 @@ public class HibernateDAO {
         session.update(user);
     }
 
-    public User findUserByUsername(String username) {
-        List<User> userList = sessionFactory.openSession().createQuery("from User where username=?")
-                                            .setParameter(0, username).list();
-        if(userList.size()>0)
-            return userList.get(0);
-        return null;
+    public void saveUserTeamIntoDB(UserTeam userTeam) {
+        Session session = getSessionFactory().getCurrentSession();
+        session.save(userTeam);
     }
 }

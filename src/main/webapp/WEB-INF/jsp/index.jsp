@@ -5,5 +5,6 @@
 
 <h3>We'll add more info here soon.</h3>
 <a href="signup">registration</a>
+<a href="login">login</a>
 </body>
 </html>

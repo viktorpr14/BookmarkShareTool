@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by vv on 01.12.2014.
  */
@@ -22,6 +25,7 @@ public class HibernateDAO {
         session.beginTransaction();
         session.save(user);
         session.getTransaction().commit();
+        session.close();
     }
 
     public SessionFactory getSessionFactory() {
@@ -30,5 +34,13 @@ public class HibernateDAO {
 
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+    }
+
+    public User findUserByUsername(String username) {
+        List<User> userList = sessionFactory.openSession().createQuery("from User where username=?")
+                                            .setParameter(0, username).list();
+        if(userList.size()>0)
+            return userList.get(0);
+        return null;
     }
 }

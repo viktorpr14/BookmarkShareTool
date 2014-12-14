@@ -7,15 +7,39 @@
            http://www.springframework.org/schema/security
            http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
-    <http auto-config="true">
-        <intercept-url pattern="/**" access="ROLE_USER"/>
+    <http auto-config="true" use-expressions="true">
+        <intercept-url pattern="/" access="permitAll"/>
+        <intercept-url pattern="/userProfile" access="hasRole('ROLE_USER')"/>
+
+        <form-login login-page="/login"
+                    authentication-failure-url="/login/failure"
+                    default-target-url="/userProfile"/>
+
+        <remember-me token-validity-seconds="3600" user-service-ref="customUserDetailsService"/>
+
+        <access-denied-handler error-page="/access/denied"/>
     </http>
+
+
+    <beans:bean id="customUserDetailsService" class="org.softserveinc.service.CustomUserDetailsService"/>
+
+    <beans:bean id="daoAuthenticationProvider"
+                class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <beans:property name="userDetailsService" ref="customUserDetailsService"/>
+    </beans:bean>
+
+    <beans:bean id="authenticationManager"
+                class="org.springframework.security.authentication.ProviderManager">
+        <beans:property name="providers">
+            <beans:list>
+                <beans:ref local="daoAuthenticationProvider"/>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
     <authentication-manager>
-        <authentication-provider>
-            <user-service>
-                <user name="jimi" password="jimispassword" authorities="ROLE_USER, ROLE_ADMIN"/>
-                <user name="bob" password="bobspassword" authorities="ROLE_USER"/>
-            </user-service>
+        <authentication-provider user-service-ref="customUserDetailsService">
+            <password-encoder hash="plaintext"/>
         </authentication-provider>
     </authentication-manager>
+
 </beans:beans>

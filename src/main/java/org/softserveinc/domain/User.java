@@ -1,17 +1,21 @@
 package org.softserveinc.domain;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Component
 @Entity
 @Table(name = "USER")
-public class User implements UserDetails{
+public class User implements UserDetails {
 
     private Integer userId;
 
@@ -33,11 +37,15 @@ public class User implements UserDetails{
 
     private Set<UserRole> roles = new HashSet<UserRole>();
 
+    private List<? extends GrantedAuthority> authorities;
+
+    private boolean accountNonExpired;
+    private boolean accountNonLocked;
+    private boolean credentialsNonExpired;
+    private boolean enabled;
+
     public User() {
     }
-
-    @Transient
-    private Collection<? extends GrantedAuthority> authorities;
 
     public User(String firstName, String lastName, String username, String email, String password) {
         this.firstName = firstName;
@@ -109,36 +117,49 @@ public class User implements UserDetails{
         this.roles = roles;
     }
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "pk.user", cascade = CascadeType.ALL)
-    public Set<UserTeam> getUsersTeams() {
-        return usersTeams;
+    @Override
+    @Transient
+    public boolean isAccountNonExpired() {
+        return true;
     }
-
-    public void setUsersTeams(Set<UserTeam> usersTeams) {
-        this.usersTeams = usersTeams;
+    public void setAccountNonExpired(boolean accountNonExpired) {
+        this.accountNonExpired=accountNonExpired;
     }
 
     @Override
+    @Transient
     public boolean isAccountNonLocked() {
         return true;
     }
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
+    }
 
     @Override
+    @Transient
     public boolean isCredentialsNonExpired() {
         return true;
     }
+    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+        this.credentialsNonExpired = credentialsNonExpired;
+    }
 
     @Override
+    @Transient
     public boolean isEnabled() {
         return true;
     }
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    @Transient
+    public List<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+    public void setAuthorities(List<? extends GrantedAuthority> authorities) {
         this.authorities = authorities;
     }
 }

@@ -33,11 +33,7 @@ public class AccessController {
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-<<<<<<< HEAD
     public String addUser(User user) {
-=======
-    public String addUser(User user, Model model) {
->>>>>>> 66dc80c... Added proxi entity to User-Community many-to-many relationship
 
         userService.saveUserIntoDB(user);
         return "redirect:/userProfile/"+user.getUsername();

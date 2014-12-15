@@ -14,6 +14,7 @@ public class UserTeam {
     private boolean isMember;
     private Team team;
     private Integer userId;
+    private String invitation;
 
     public UserTeam() {
 
@@ -55,4 +56,11 @@ public class UserTeam {
         this.isMember = isMember;
     }
 
+    public String getInvitation() {
+        return invitation;
+    }
+
+    public void setInvitation(String invitation) {
+        this.invitation = invitation;
+    }
 }

@@ -1,5 +1,6 @@
 package org.softserveinc.controller;
 
+import com.google.gson.Gson;
 import org.softserveinc.domain.Team;
 import org.softserveinc.domain.User;
 import org.softserveinc.domain.UserTeam;
@@ -14,6 +15,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -79,6 +87,8 @@ public class UserController {
 
         userService.saveTeamIntoDB(team);
 
+        System.out.println("Team ID=" + team.getTeamId());
+
         UserTeam userTeam = new UserTeam();
         userTeam.setMember(true);
         userTeam.setUserId(user.getUserId());
@@ -92,5 +102,33 @@ public class UserController {
 
         return "teamProfile";
     }
+
+    @RequestMapping("/getNotMembersForTeam")
+    public void getNotMembersForTeam(HttpServletRequest request, HttpServletResponse response) {
+        String teamId = request.getParameter("teamId");
+
+        Map<String, String> idsAndNames = userService.getIdsAndNamesOfNotMembersByTeamId(teamId);
+
+        String json = new Gson().toJson(idsAndNames);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        try {
+            response.getWriter().write(json);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+//    @RequestMapping(value = "/inviteUserToTeam/{teamId}", method = RequestMethod.GET)
+//    public String getInviteUserToTeamPage(@PathVariable("teamId") Integer teamId, Model model) {
+//
+////        userService.get
+////        Integer teamId = te
+//        System.out.print(teamId);
+//
+//        model.addAttribute("team", new Team());
+//        return "creatingTeam";
+//    }
 
 }

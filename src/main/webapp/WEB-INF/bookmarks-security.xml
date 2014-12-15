@@ -15,17 +15,17 @@
                     authentication-failure-url="/login/failure"
                     default-target-url="/userProfile"/>
 
-        <remember-me token-validity-seconds="3600" user-service-ref="customUserDetailsService"/>
+        <remember-me token-validity-seconds="3600" user-service-ref="userProvider"/>
 
         <access-denied-handler error-page="/access/denied"/>
     </http>
 
 
-    <beans:bean id="customUserDetailsService" class="org.softserveinc.service.CustomUserDetailsService"/>
+    <beans:bean id="userProvider" class="org.softserveinc.service.UserProvider"/>
 
     <beans:bean id="daoAuthenticationProvider"
                 class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
-        <beans:property name="userDetailsService" ref="customUserDetailsService"/>
+        <beans:property name="userDetailsService" ref="userProvider"/>
     </beans:bean>
 
     <beans:bean id="authenticationManager"
@@ -37,7 +37,7 @@
         </beans:property>
     </beans:bean>
     <authentication-manager>
-        <authentication-provider user-service-ref="customUserDetailsService">
+        <authentication-provider user-service-ref="userProvider">
             <password-encoder hash="plaintext"/>
         </authentication-provider>
     </authentication-manager>

@@ -26,7 +26,6 @@ public class UserService {
         return hibernateDAO.findUserByUsername(username);
     }
 
-
     public void saveTeamIntoDB(Team team) {
         hibernateDAO.saveTeamIntoDB(team);
     }
@@ -79,4 +78,10 @@ public class UserService {
 
         return users;
     }
+
+    public Team getTeamById(String teamId) {
+        Team team = hibernateDAO.getTeamById(teamId);
+        return team;
+    }
+
 }

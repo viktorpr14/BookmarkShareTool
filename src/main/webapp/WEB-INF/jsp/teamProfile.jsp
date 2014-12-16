@@ -48,10 +48,17 @@
 
   <%--<a href="inviteUserToTeam/${team.teamId}">Invite User</a>--%>
   <input type="button" id="invite" name="invite" value="Invite Members" /> <%--onclick="sayHello()"/>--%>
+  <br/>
+  <form name="invitationform" id="invitationform" action="inviteUser" method="post">
 
-  <select name="users" id="users">
-      <option value="-1"></option>
-  </select>
+    <select name="users" id="users">
+        <option value="-1"></option>
+    </select>
+
+    <input type="hidden" id="teamId" name="teamId" value="${team.teamId}"/>
+    <input type="submit" value="Invite"/>
+
+  </form>
 
 </body>
 </html>

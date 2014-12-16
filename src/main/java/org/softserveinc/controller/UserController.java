@@ -81,18 +81,32 @@ public class UserController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
-//    @RequestMapping(value = "/inviteUserToTeam/{teamId}", method = RequestMethod.GET)
-//    public String getInviteUserToTeamPage(@PathVariable("teamId") Integer teamId, Model model) {
-//
-////        userService.get
-////        Integer teamId = te
-//        System.out.print(teamId);
-//
-//        model.addAttribute("team", new Team());
-//        return "creatingTeam";
-//    }
+    @RequestMapping(value = "inviteUser", method = RequestMethod.POST)
+    public String inviteUser(HttpServletRequest request, Model model) {
 
+        String userId = request.getParameter("users");
+        System.out.println(userId);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String userName = auth.getName();
+
+        String teamId = request.getParameter("teamId");
+        System.out.println("teamId" + teamId);
+
+        Team team = userService.getTeamById(teamId);
+
+        UserTeam userTeam = new UserTeam();
+        userTeam.setMember(false);
+        userTeam.setUserId(Integer.parseInt(userId));
+        userTeam.setTeam(team);
+        userTeam.setInvitation(userName);
+
+        userService.saveUserTeamIntoDB(userTeam);
+
+        model.addAttribute(team);
+
+        return "teamProfile";
+    }
 }

@@ -86,24 +86,23 @@ public class UserController {
     @RequestMapping(value = "inviteUser", method = RequestMethod.POST)
     public String inviteUser(HttpServletRequest request, Model model) {
 
-        String userId = request.getParameter("users");
-        System.out.println(userId);
-
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userName = auth.getName();
 
+        String userId = request.getParameter("users");
         String teamId = request.getParameter("teamId");
-        System.out.println("teamId" + teamId);
 
         Team team = userService.getTeamById(teamId);
 
-        UserTeam userTeam = new UserTeam();
-        userTeam.setMember(false);
-        userTeam.setUserId(Integer.parseInt(userId));
-        userTeam.setTeam(team);
-        userTeam.setInvitation(userName);
+        if(Integer.parseInt(userId) > 0) {
+            UserTeam userTeam = new UserTeam();
+            userTeam.setMember(false);
+            userTeam.setUserId(Integer.parseInt(userId));
+            userTeam.setTeam(team);
+            userTeam.setInvitation(userName);
 
-        userService.saveUserTeamIntoDB(userTeam);
+            userService.saveUserTeamIntoDB(userTeam);
+        }
 
         model.addAttribute(team);
 

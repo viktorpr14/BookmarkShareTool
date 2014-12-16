@@ -25,6 +25,13 @@ public class UserRole {
     @NotFound(action = NotFoundAction.IGNORE)
     private Set<User> users = new HashSet<User>();
 
+    public UserRole(){}
+
+    public UserRole(Integer roleId, String role) {
+        this.roleId = roleId;
+        this.role = role;
+    }
+
     public Integer getRoleId() {
         return roleId;
     }

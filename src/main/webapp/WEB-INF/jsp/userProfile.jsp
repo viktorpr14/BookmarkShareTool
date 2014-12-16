@@ -21,5 +21,8 @@
         <td>${user.email}</td>
     </tr>
 </table>
+
+<a href="creatingTeam">Create Team</a>
+
 </body>
 </html>

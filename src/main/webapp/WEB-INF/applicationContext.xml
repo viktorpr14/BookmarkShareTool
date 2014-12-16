@@ -24,7 +24,7 @@
 	</bean>
 
 
-	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"> <!--.hibernate3.annotation.AnnotationSessionFactoryBean">-->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"/>
 		<property name="packagesToScan" value="org.softserveinc.domain"/>
 		<property name="hibernateProperties">
@@ -48,6 +48,7 @@
      For example @Controller and @Service. Make sure to set the correct base-package -->
     <context:component-scan base-package="org.softserveinc"/>
 
+	
     <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
           p:prefix="/WEB-INF/jsp/" p:suffix=".jsp"/>
 

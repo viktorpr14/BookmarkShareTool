@@ -1,6 +1,6 @@
 package org.softserveinc.interceptor;
 
-import org.softserveinc.service.CustomUserDetailsService;
+import org.softserveinc.service.UserProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 public class UserInterceptor extends HandlerInterceptorAdapter{
 
     @Autowired
-    CustomUserDetailsService customUserDetailsService;
+    UserProvider userProvider;
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         if (null == modelAndView){

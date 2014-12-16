@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 @Controller
 public class AccessController {
@@ -46,7 +46,7 @@ public class AccessController {
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public String addUser(User user, HttpServletRequest request, HttpServletResponse responsee) {
-        user.setRoles(new ArrayList<UserRole>(){{add(new UserRole(2, "ROLE_USER"));}});
+        user.setRoles(new HashSet<UserRole>(){{add(new UserRole(2, "ROLE_USER"));}});
         userService.saveUserIntoDB(user);
         authenticateUserAndSetSession(user, request);
         return "redirect:/userProfile";

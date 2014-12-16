@@ -6,16 +6,17 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Component
 @Entity
 @Table(name = "USER")
-public class User implements UserDetails{
+public class User implements UserDetails {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer userId;
 
     @NotNull
@@ -34,23 +35,17 @@ public class User implements UserDetails{
     @NotNull
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name="USERS_ROLES",
-        joinColumns = @JoinColumn(name="USER_ID"),
-        inverseJoinColumns = @JoinColumn(name="ROLE_ID"))
-    private Collection<UserRole> roles = new ArrayList<UserRole>();
+    private Set<UserRole> roles = new HashSet<UserRole>();
 
-    @ManyToMany
-    @JoinTable(name="USERS_COMMUNITIES",
-        joinColumns = @JoinColumn(name="USER_ID"),
-        inverseJoinColumns = @JoinColumn(name="COMMUNITY_ID"))
-    private Collection<Community> communities = new ArrayList<Community>();
+    private List<? extends GrantedAuthority> authorities;
+
+    private boolean accountNonExpired;
+    private boolean accountNonLocked;
+    private boolean credentialsNonExpired;
+    private boolean enabled;
 
     public User() {
     }
-
-    @Transient
-    private Collection<? extends GrantedAuthority> authorities;
 
     public User(String firstName, String lastName, String username, String email, String password) {
         this.firstName = firstName;
@@ -60,6 +55,8 @@ public class User implements UserDetails{
         this.password = password;
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getUserId() {
         return userId;
     }
@@ -108,48 +105,61 @@ public class User implements UserDetails{
         this.email = email;
     }
 
-    public Collection<UserRole> getRoles() {
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name="USERS_ROLES",
+            joinColumns = @JoinColumn(name="userId"),
+            inverseJoinColumns = @JoinColumn(name="roleId"))
+    public Set<UserRole> getRoles() {
         return roles;
     }
 
-    public void setRoles(Collection<UserRole> roles) {
+    public void setRoles(Set<UserRole> roles) {
         this.roles = roles;
     }
 
-    public Collection<Community> getCommunities() {
-        return communities;
-    }
-
-    public void setCommunities(Collection<Community> communities) {
-        this.communities = communities;
-    }
-
     @Override
+    @Transient
     public boolean isAccountNonExpired() {
         return true;
     }
+    public void setAccountNonExpired(boolean accountNonExpired) {
+        this.accountNonExpired=accountNonExpired;
+    }
 
     @Override
+    @Transient
     public boolean isAccountNonLocked() {
         return true;
     }
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
+    }
 
     @Override
+    @Transient
     public boolean isCredentialsNonExpired() {
         return true;
     }
+    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+        this.credentialsNonExpired = credentialsNonExpired;
+    }
 
     @Override
+    @Transient
     public boolean isEnabled() {
         return true;
     }
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    @Transient
+    public List<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+    public void setAuthorities(List<? extends GrantedAuthority> authorities) {
         this.authorities = authorities;
     }
 }

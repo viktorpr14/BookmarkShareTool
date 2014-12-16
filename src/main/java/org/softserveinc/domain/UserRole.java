@@ -1,7 +1,12 @@
 package org.softserveinc.domain;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by vv on 05.12.2014.
@@ -13,9 +18,12 @@ public class UserRole {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer roleId;
+
     private String role;
+
     @ManyToMany(mappedBy = "roles")
-    private Collection<User> users;
+    @NotFound(action = NotFoundAction.IGNORE)
+    private Set<User> users = new HashSet<User>();
 
     public Integer getRoleId() {
         return roleId;
@@ -25,11 +33,11 @@ public class UserRole {
         this.roleId = roleId;
     }
 
-    public Collection<User> getUsers() {
+    public Set<User> getUsers() {
         return users;
     }
 
-    public void setUsers(Collection<User> users) {
+    public void setUsers(Set<User> users) {
         this.users = users;
     }
 

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class CustomUserDetailsService implements UserDetailsService {
+public class UserProvider implements UserDetailsService {
 
     @Autowired
     private HibernateDAO hibernateDAO;

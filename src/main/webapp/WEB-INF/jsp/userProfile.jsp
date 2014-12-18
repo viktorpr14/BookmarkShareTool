@@ -23,6 +23,6 @@
 </table>
 
 <a href="creatingTeam">Create Team</a>
-
+<a href="logout">Logout</a>
 </body>
 </html>

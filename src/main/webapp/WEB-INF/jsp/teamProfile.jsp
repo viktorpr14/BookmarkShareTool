@@ -52,6 +52,6 @@
   <select name="users" id="users">
       <option value="-1"></option>
   </select>
-
+  <a href="logout">Logout</a>
 </body>
 </html>

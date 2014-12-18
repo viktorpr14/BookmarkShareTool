@@ -22,6 +22,6 @@
   </fieldset>
 </sf:form>
 
-
+<a href="logout">Logout</a>
 </body>
 </html>

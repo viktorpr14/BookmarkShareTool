@@ -10,6 +10,8 @@
     <http auto-config="true" use-expressions="true">
         <intercept-url pattern="/" access="permitAll"/>
         <intercept-url pattern="/userProfile" access="hasRole('ROLE_USER')"/>
+        <intercept-url pattern="/signup" access="isAnonymous()"/>
+        <intercept-url pattern="/login" access="isAnonymous()"/>
 
         <form-login login-page="/login"
                     authentication-failure-url="/login/failure"
@@ -17,7 +19,11 @@
 
         <remember-me token-validity-seconds="3600" user-service-ref="userProvider"/>
 
-        <access-denied-handler error-page="/access/denied"/>
+        <access-denied-handler error-page="/denied"/>
+
+        <logout invalidate-session="true"
+                logout-success-url="/"
+                logout-url="/logout"/>
     </http>
 
 

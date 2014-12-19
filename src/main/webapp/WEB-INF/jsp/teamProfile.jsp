@@ -45,6 +45,6 @@
     <input style="display: none" type="submit" id="submitInvitation" value="Invite"/>
 
   </form>
-
+  <a href="logout">Logout</a>
 </body>
 </html>

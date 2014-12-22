@@ -39,10 +39,10 @@ public class User implements UserDetails {
 
     private List<? extends GrantedAuthority> authorities;
 
-    private boolean accountNonExpired;
-    private boolean accountNonLocked;
-    private boolean credentialsNonExpired;
-    private boolean enabled;
+    private transient boolean accountNonExpired;
+    private transient boolean accountNonLocked;
+    private transient boolean credentialsNonExpired;
+    private transient boolean enabled;
 
     public User() {
     }

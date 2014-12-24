@@ -23,7 +23,7 @@ public class UserRole {
 
     @ManyToMany(mappedBy = "roles")
     @NotFound(action = NotFoundAction.IGNORE)
-    private Set<User> users = new HashSet<User>();
+    private transient Set<User> users = new HashSet<User>();
 
     public UserRole(){}
 

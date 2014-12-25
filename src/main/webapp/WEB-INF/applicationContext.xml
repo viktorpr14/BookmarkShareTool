@@ -60,6 +60,8 @@
     <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
           p:prefix="/WEB-INF/jsp/" p:suffix=".jsp" p:order="1"/>
 
+	<mvc:annotation-driven content-negotiation-manager="contentNegotiationManager"/>
+
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/userProfile"/>

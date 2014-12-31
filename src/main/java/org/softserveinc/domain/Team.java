@@ -46,6 +46,7 @@ public class Team {
         this.teamName = teamName;
     }
 
+    @Transient
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "team")
     public Set<UserTeam> getUsersTeams() {
         return usersTeams;

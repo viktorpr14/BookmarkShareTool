@@ -84,4 +84,17 @@ public class UserService {
         return team;
     }
 
+    public List<Team> findTeamsByUsername(String userName) {
+        List<Team> teams = new ArrayList<Team>();
+
+        User user = hibernateDAO.findUserByUsername(userName);
+        Integer userId = user.getUserId();
+
+        List<UserTeam> userTeams = hibernateDAO.findUserTeamsByUserId(userId);
+        for (UserTeam userTeam : userTeams) {
+            teams.add(userTeam.getTeam());
+        }
+
+        return teams;
+    }
 }

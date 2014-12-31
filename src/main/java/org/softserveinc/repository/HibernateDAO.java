@@ -131,4 +131,15 @@ public class HibernateDAO {
 
         return users;
     }
+
+    public List<UserTeam> findUserTeamsByUserId(Integer userId) {
+
+        Session session = getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(UserTeam.class);
+        criteria.add(Restrictions.eq("userId", userId));
+
+        List<UserTeam> userTeams = (List<UserTeam>) criteria.list();
+
+        return userTeams;
+    }
 }

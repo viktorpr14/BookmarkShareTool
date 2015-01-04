@@ -3,6 +3,7 @@
 
 <head>
     <link href="/resources/styles/animation.css" rel="stylesheet"/>
+    <link href="/resources/styles/navbar.css" rel="stylesheet"/>
 
     <script src="/resources/js/angular.js"></script>
     <script src="/resources/js/angular-route.js"></script>
@@ -32,15 +33,27 @@
 
 <body>
 
+    <!-- Navigation links -->
+    <div id="navbar">
+        <span class="pos_fixed"><h3>username: ${user.username}</h3></span>
+        <a href="#/" class="navbar-brand">Bookmarks Share Tool</a>
+        <br/><br/>
+        <a href="#/" class="navigate">Home</a>
+        <a href="#userProfile/${user.username}" class="navigate">User Profile</a>
+        <a href="#/teams/${user.username}" class="navigate">Show Teams</a>
+    </div>
+<%--
 <h2>User Profile: ${user.username}</h2>
 <br/>
+--%>
 <%--
 <a href="creatingTeam">Create Team</a>
 <a href="logout">Logout</a>
 
 --%>
 
-    <a href="#/teams/${user.username}">Show Teams</a>
+<%--    <a href="#/teams/${user.username}">Show Teams</a>--%>
+    <br/>
 
     <div ng-view class="slide-animation"></div>
 
@@ -59,6 +72,11 @@
             {
                 controller: 'TeamProfileController',
                 templateUrl: '/resources/partials/teamProfile.html'
+            })
+            .when('/userProfile/:username',
+            {
+                controller: 'UserProfileController',
+                templateUrl: '/resources/partials/userProfile.html'
             });
          });
 
@@ -86,6 +104,18 @@
         });
 
 
+        app.controller('UserProfileController', function($scope, $routeParams, teamFactory) {
+            init();
+
+            function init() {
+                teamFactory.getUserProfileByUsername($routeParams.username).success(function(data) {
+                    $scope.user = data;
+                });
+            }
+
+        });
+
+
         app.factory('teamFactory', function($http) {
             var factory = {};
             factory.getTeams = function(userName) {
@@ -94,6 +124,9 @@
             factory.getTeamById = function(teamId) {
                 return $http.get('/rest/team/' + teamId);
             };
+            factory.getUserProfileByUsername = function(userName) {
+                return $http.get('/rest/userProfile/' + userName);
+            }
             return factory;
         });
 

@@ -41,6 +41,7 @@
         <a href="#/" class="navigate">Home</a>
         <a href="#userProfile/${user.username}" class="navigate">User Profile</a>
         <a href="#/teams/${user.username}" class="navigate">Show Teams</a>
+        <a href="#/newTeam/${user.username}" class="navigate">Create New Team</a>
     </div>
 <%--
 <h2>User Profile: ${user.username}</h2>
@@ -77,6 +78,11 @@
             {
                 controller: 'UserProfileController',
                 templateUrl: '/resources/partials/userProfile.html'
+            })
+            .when('/newTeam/:username',
+            {
+                controller: 'NewTeamController',
+                templateUrl: '/resources/partials/newTeam.html'
             });
          });
 
@@ -113,6 +119,18 @@
                 });
             }
 
+        });
+
+
+        app.controller('NewTeamController', function($scope, $routeParams, $http) {
+            $scope.createNewTeam = function() {
+                var newTeam = {
+                    teamName: $scope.teamName
+                }
+                $http.post('/rest/createTeam/' + $routeParams.username, newTeam)
+                        .success(function() {alert("New Team Have Been Created")});
+                $scope.teamName = '';
+            }
         });
 
 

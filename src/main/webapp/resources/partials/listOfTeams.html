@@ -1,0 +1,15 @@
+<div>
+    Search: <input type="text" ng-model="searchText">
+    <br />
+    <h3>Teams:</h3>
+    <table>
+        <tr>
+            <td><h4>Team Name</h4></td>
+            <td><h4>Team ID</h4></td>
+        </tr>
+        <tr ng-repeat="team in teams |  filter:searchText | orderBy:'teamName'">
+            <td><a href="#/team/{{ team.teamId }}">{{ team.teamName  }}</a></td>
+            <td>{{ team.teamId }}</td>
+        </tr>
+    </table>
+</div>

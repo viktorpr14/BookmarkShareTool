@@ -122,13 +122,16 @@
         });
 
 
-        app.controller('NewTeamController', function($scope, $routeParams, $http) {
+        app.controller('NewTeamController', function($scope, $routeParams, $http, $location) {
             $scope.createNewTeam = function() {
                 var newTeam = {
                     teamName: $scope.teamName
                 }
                 $http.post('/rest/createTeam/' + $routeParams.username, newTeam)
-                        .success(function() {alert("New Team Have Been Created")});
+                        .success(function(data) {
+                            $scope.createdTeamId = data;
+                            $location.url("/team/" + $scope.createdTeamId);
+                        });
                 $scope.teamName = '';
             }
         });

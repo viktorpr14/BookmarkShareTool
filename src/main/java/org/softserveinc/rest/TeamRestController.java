@@ -29,7 +29,7 @@ public class TeamRestController {
     }
 
     @RequestMapping(value = "/rest/createTeam/{username}", method = RequestMethod.POST)
-    public void getTeamById(@PathVariable("username") String userName, @RequestBody Team newTeam) {
+    public String createNewTeam(@PathVariable("username") String userName, @RequestBody Team newTeam) {
         Team team = new Team();
         team.setTeamName(newTeam.getTeamName());
 
@@ -45,6 +45,8 @@ public class TeamRestController {
         team.getUsersTeams().add(userTeam);
 
         userService.saveUserTeamIntoDB(userTeam);
+
+        return new Gson().toJson(team.getTeamId());
     }
 
 }

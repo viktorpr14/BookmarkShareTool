@@ -1,6 +1,7 @@
 package org.softserveinc.rest;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.softserveinc.domain.Team;
 import org.softserveinc.domain.User;
 import org.softserveinc.domain.UserTeam;
@@ -9,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import java.util.List;
 
 /**
  * Created by vv on 29.12.2014.
@@ -20,12 +22,16 @@ public class TeamRestController {
 
     @RequestMapping(value = "/rest/teams/{username}", method = RequestMethod.GET)
     public String getTeamsByUserName(@PathVariable("username") String userName) {
-        return new Gson().toJson(userService.findTeamsByUsername(userName));
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        return gson.toJson(userService.findTeamsByUsername(userName));
+//        return new Gson().toJson(userService.findTeamsByUsername(userName));
     }
 
     @RequestMapping(value = "/rest/team/{teamId}", method = RequestMethod.GET)
     public String getTeamById(@PathVariable("teamId") String teamId) {
-        return new Gson().toJson(userService.getTeamById(teamId));
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        return gson.toJson(userService.getTeamById(teamId));
+//        return new Gson().toJson(userService.getTeamById(teamId));
     }
 
     @RequestMapping(value = "/rest/createTeam/{username}", method = RequestMethod.POST)
@@ -47,6 +53,13 @@ public class TeamRestController {
         userService.saveUserTeamIntoDB(userTeam);
 
         return new Gson().toJson(team.getTeamId());
+    }
+
+    @RequestMapping(value = "/rest/notMembers/{teamId}", method = RequestMethod.GET)
+    public String getNotMembersByTeamId(@PathVariable("teamId") String teamId) {
+        List<User> users = userService.getNotMembersByTeamId(teamId);
+
+        return new Gson().toJson(users);
     }
 
 }

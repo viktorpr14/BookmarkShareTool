@@ -14,3 +14,30 @@
 </table>
 
 </div>
+
+<br/>
+<div>
+    <button ng-click="getNotMembersByTeamId(team.teamId)">invite users</button>
+</div>
+<br/>
+
+<div class="usersList">
+    Search: <input type="text" ng-model="searchText">
+    <br />
+    <h3>Users:</h3>
+    <table>
+        <tr>
+            <td><h4>First Name</h4></td>
+            <td><h4>Last Name</h4></td>
+            <td><h4>Username</h4></td>
+            <td><h4>Email</h4></td>
+        </tr>
+        <tr ng-repeat="user in users |  filter:searchText | orderBy:'firstName'">
+            <td>{{ user.firstName}}</td>
+            <td>{{ user.lastName}}</td>
+            <td>{{ user.username}}</td>
+            <td>{{ user.email}}</td>
+        </tr>
+    </table>
+
+</div>

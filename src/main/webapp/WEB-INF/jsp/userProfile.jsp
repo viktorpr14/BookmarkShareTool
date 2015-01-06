@@ -108,6 +108,7 @@
             }
 
             $scope.getNotMembersByTeamId = function(teamId) {
+                $('#invite').show();
                 teamFactory.getNotMembersByTeamId(teamId).success(function(data) {
                     $scope.users = data;});
             }

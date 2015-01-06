@@ -1,43 +1,40 @@
-<div>
-<h3>Team Profile: {{ team.teamName}}</h3>
+<div id="container">
+    <h3>Team Profile: {{ team.teamName}}</h3>
 
-<br />
-<table>
-    <tr>
-        <td><h4>Team Name</h4></td>
-        <td><h4>Team ID</h4></td>
-    </tr>
-    <tr>
-        <td>{{ team.teamName}}</td>
-        <td>{{ team.teamId}}</td>
-    </tr>
-</table>
+    <div id="profile" style="float: left">
+        <table>
+            <tr>
+                <td><h4>Team Name</h4></td>
+                <td><h4>Team ID</h4></td>
+            </tr>
+            <tr>
+                <td>{{ team.teamName}}</td>
+                <td>{{ team.teamId}}</td>
+            </tr>
+        </table>
 
-</div>
+        <br/>
+        <button ng-click="getNotMembersByTeamId(team.teamId)">invite users</button>
 
-<br/>
-<div>
-    <button ng-click="getNotMembersByTeamId(team.teamId)">invite users</button>
-</div>
-<br/>
+    </div>
 
-<div class="usersList">
-    Search: <input type="text" ng-model="searchText">
-    <br />
-    <h3>Users:</h3>
-    <table>
-        <tr>
-            <td><h4>First Name</h4></td>
-            <td><h4>Last Name</h4></td>
-            <td><h4>Username</h4></td>
-            <td><h4>Email</h4></td>
-        </tr>
-        <tr ng-repeat="user in users |  filter:searchText | orderBy:'firstName'">
-            <td>{{ user.firstName}}</td>
-            <td>{{ user.lastName}}</td>
-            <td>{{ user.username}}</td>
-            <td>{{ user.email}}</td>
-        </tr>
-    </table>
+    <div id="invite" style="float: right; display: none">
+            Search: <input type="text" ng-model="searchText">
 
+            <table>
+                <tr>
+                    <td><h4>First Name</h4></td>
+                    <td><h4>Last Name</h4></td>
+                    <td><h4>Username</h4></td>
+                    <td><h4>Email</h4></td>
+                </tr>
+                <tr ng-repeat="user in users |  filter:searchText | orderBy:'firstName'">
+                    <td>{{ user.firstName}}</td>
+                    <td>{{ user.lastName}}</td>
+                    <td>{{ user.username}}</td>
+                    <td>{{ user.email}}</td>
+                </tr>
+            </table>
+
+    </div>
 </div>

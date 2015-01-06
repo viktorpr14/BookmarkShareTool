@@ -1,5 +1,7 @@
 package org.softserveinc.domain;
 
+import com.google.gson.annotations.Expose;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -11,7 +13,9 @@ import java.util.Set;
 @Table(name = "TEAM")
 public class Team {
 
+    @Expose
     private Integer teamId;
+    @Expose
     private String teamName;
     private Set<UserTeam> usersTeams = new HashSet<UserTeam>();
 
@@ -46,7 +50,7 @@ public class Team {
         this.teamName = teamName;
     }
 
-    @Transient
+//    @Transient
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "team")
     public Set<UserTeam> getUsersTeams() {
         return usersTeams;

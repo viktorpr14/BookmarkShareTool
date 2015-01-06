@@ -54,25 +54,14 @@ public class UserService {
         return idsAndNames;
     }
 
-    private List<User> getNotMembersByTeamId(String teamId) {
-//        List<User> allUsers = hibernateDAO.getAllUsers();
-
+    public List<User> getNotMembersByTeamId(String teamId) {
         Set<Integer> idsOfMembers = new HashSet<Integer>();
-//        Set<Integer> idsOfNotMembers = new HashSet<Integer>();
 
         Team team = hibernateDAO.getTeamById(teamId);
         Set<UserTeam> userTeams = team.getUsersTeams();
         for (UserTeam userTeam : userTeams) {
             idsOfMembers.add(userTeam.getUserId());
         }
-
-//        List<UserTeam> notBelongingUserTeamObjects = hibernateDAO.getAllUserTeamObjectsNotBelongingForTeam(teamId);
-//        for (UserTeam userTeamObject : notBelongingUserTeamObjects) {
-//            idsOfNotMembers.add(userTeamObject.getUserId());
-//        }
-
-//        List<User> users = hibernateDAO.getUsersByUserIds(idsOfNotMembers);
-//        List<String> idsOfNotBelongingUsers = hibernateDAO.getIdsOfNotBelongingUsersForTeam(teamId);
 
         List<User> users = hibernateDAO.getUsersExceptMembers(idsOfMembers);
 

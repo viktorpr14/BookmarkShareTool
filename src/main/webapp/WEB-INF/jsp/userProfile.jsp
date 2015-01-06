@@ -98,7 +98,7 @@
         });
 
 
-        app.controller('TeamProfileController', function($scope, $routeParams, teamFactory) {
+        app.controller('TeamProfileController', function($window, $scope, $routeParams, teamFactory) {
             init();
 
             function init() {
@@ -106,6 +106,15 @@
                     $scope.team = data;
                 });
             }
+
+            $scope.getNotMembersByTeamId = function(teamId) {
+                teamFactory.getNotMembersByTeamId(teamId).success(function(data) {
+                    $scope.users = data;});
+            }
+
+//            $scope.getNotMembersByTeamId = function() {
+//                $window.alert('HELLOOO!');
+//            }
 
         });
 
@@ -122,13 +131,16 @@
         });
 
 
-        app.controller('NewTeamController', function($scope, $routeParams, $http) {
+        app.controller('NewTeamController', function($scope, $routeParams, $http, $location) {
             $scope.createNewTeam = function() {
                 var newTeam = {
                     teamName: $scope.teamName
                 }
                 $http.post('/rest/createTeam/' + $routeParams.username, newTeam)
-                        .success(function() {alert("New Team Have Been Created")});
+                        .success(function(data) {
+                            $scope.createdTeamId = data;
+                            $location.url("/team/" + $scope.createdTeamId);
+                        });
                 $scope.teamName = '';
             }
         });
@@ -144,6 +156,9 @@
             };
             factory.getUserProfileByUsername = function(userName) {
                 return $http.get('/rest/userProfile/' + userName);
+            }
+            factory.getNotMembersByTeamId = function(teamId) {
+                return $http.get('/rest/notMembers/' + teamId);
             }
             return factory;
         });

@@ -11,10 +11,10 @@ import javax.persistence.*;
 public class UserTeam {
 
     private Integer userTeamId;
-    private boolean isMember;
+//    private boolean isMember;
     private Team team;
     private Integer userId;
-    private String invitation;
+    private String status;
 
     public UserTeam() {
 
@@ -48,19 +48,19 @@ public class UserTeam {
         this.userId = userId;
     }
 
-    public boolean isMember() {
-        return isMember;
+//    public boolean isMember() {
+//        return isMember;
+//    }
+
+//    public void setMember(boolean isMember) {
+//        this.isMember = isMember;
+//    }
+
+    public String getStatus() {
+        return status;
     }
 
-    public void setMember(boolean isMember) {
-        this.isMember = isMember;
-    }
-
-    public String getInvitation() {
-        return invitation;
-    }
-
-    public void setInvitation(String invitation) {
-        this.invitation = invitation;
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

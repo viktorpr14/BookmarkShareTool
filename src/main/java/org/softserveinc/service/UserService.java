@@ -86,4 +86,15 @@ public class UserService {
 
         return teams;
     }
+
+    public void inviteUserToTeam(String teamId, String userId) {
+        Team team = hibernateDAO.getTeamById(teamId);
+
+        UserTeam userTeam = new UserTeam();
+        userTeam.setStatus("invited");
+        userTeam.setUserId(Integer.parseInt(userId));
+        userTeam.setTeam(team);
+
+        hibernateDAO.saveUserTeamIntoDB(userTeam);
+    }
 }

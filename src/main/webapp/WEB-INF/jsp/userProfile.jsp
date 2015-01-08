@@ -113,6 +113,12 @@
                     $scope.users = data;});
             }
 
+            $scope.inviteUserToTeam = function(teamId, userId) {
+                var buttonId = '#' + userId;
+                $(buttonId).attr('disabled', 'disabled');
+                teamFactory.inviteUserToTeam(teamId, userId);
+            }
+
 //            $scope.getNotMembersByTeamId = function() {
 //                $window.alert('HELLOOO!');
 //            }
@@ -157,10 +163,13 @@
             };
             factory.getUserProfileByUsername = function(userName) {
                 return $http.get('/rest/userProfile/' + userName);
-            }
+            };
             factory.getNotMembersByTeamId = function(teamId) {
                 return $http.get('/rest/notMembers/' + teamId);
-            }
+            };
+            factory.inviteUserToTeam = function(teamId, userId) {
+                $http.get('/rest/inviteUser/' + teamId + '/' + userId);
+            };
             return factory;
         });
 

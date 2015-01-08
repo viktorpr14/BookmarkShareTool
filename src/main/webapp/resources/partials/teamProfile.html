@@ -33,6 +33,7 @@
                     <td>{{ user.lastName}}</td>
                     <td>{{ user.username}}</td>
                     <td>{{ user.email}}</td>
+                    <td><button id="{{user.userId}}" ng-click="inviteUserToTeam(team.teamId, user.userId)">invite</button></td>
                 </tr>
             </table>
 

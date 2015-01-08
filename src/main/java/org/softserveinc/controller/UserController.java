@@ -54,7 +54,7 @@ public class UserController {
         System.out.println("Team ID=" + team.getTeamId());
 
         UserTeam userTeam = new UserTeam();
-        userTeam.setMember(true);
+//        userTeam.setMember(true);
         userTeam.setUserId(user.getUserId());
         userTeam.setTeam(team);
 
@@ -96,10 +96,10 @@ public class UserController {
 
         if(Integer.parseInt(userId) > 0) {
             UserTeam userTeam = new UserTeam();
-            userTeam.setMember(false);
+//            userTeam.setMember(false);
             userTeam.setUserId(Integer.parseInt(userId));
             userTeam.setTeam(team);
-            userTeam.setInvitation(userName);
+//            userTeam.setStatus(userName);
 
             userService.saveUserTeamIntoDB(userTeam);
         }

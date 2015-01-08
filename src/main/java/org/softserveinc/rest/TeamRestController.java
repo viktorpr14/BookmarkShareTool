@@ -44,7 +44,7 @@ public class TeamRestController {
         User user = userService.findUserByUsername(userName);
 
         UserTeam userTeam = new UserTeam();
-        userTeam.setMember(true);
+        userTeam.setStatus("owner");
         userTeam.setUserId(user.getUserId());
         userTeam.setTeam(team);
 
@@ -58,8 +58,12 @@ public class TeamRestController {
     @RequestMapping(value = "/rest/notMembers/{teamId}", method = RequestMethod.GET)
     public String getNotMembersByTeamId(@PathVariable("teamId") String teamId) {
         List<User> users = userService.getNotMembersByTeamId(teamId);
-
         return new Gson().toJson(users);
+    }
+
+    @RequestMapping(value = "/rest/inviteUser/{teamId}/{userId}", method = RequestMethod.GET)
+    public void inviteUserToTeam(@PathVariable("teamId") String teamId, @PathVariable("userId") String userId) {
+        userService.inviteUserToTeam(teamId, userId);
     }
 
 }

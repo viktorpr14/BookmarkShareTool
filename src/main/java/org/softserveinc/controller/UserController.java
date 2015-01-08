@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-
 @Controller
 public class UserController {
 
@@ -56,9 +55,6 @@ public class UserController {
         UserTeam userTeam = new UserTeam();
         userTeam.setUserId(user.getUserId());
         userTeam.setTeamId(team.getTeamId());
-//        userTeam.setTeam(team);
-
-//        team.getUsersTeams().add(userTeam);
 
         userService.saveUserTeamIntoDB(userTeam);
 

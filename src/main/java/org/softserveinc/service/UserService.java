@@ -30,10 +30,6 @@ public class UserService {
         hibernateDAO.saveTeamIntoDB(team);
     }
 
-    public void updateUserInDB(User user) {
-        hibernateDAO.updateUserInDB(user);
-    }
-
     public void saveUserTeamIntoDB(UserTeam userTeam) {
         hibernateDAO.saveUserTeamIntoDB(userTeam);
     }
@@ -53,20 +49,6 @@ public class UserService {
 
         return idsAndNames;
     }
-
-//    public List<User> getNotMembersByTeamId(String teamId) {
-//        Set<Integer> idsOfMembers = new HashSet<Integer>();
-//
-//        Team team = hibernateDAO.getTeamById(teamId);
-//        Set<UserTeam> userTeams = team.getUsersTeams();
-//        for (UserTeam userTeam : userTeams) {
-//            idsOfMembers.add(userTeam.getUserId());
-//        }
-//
-//        List<User> users = hibernateDAO.getUsersExceptMembers(idsOfMembers);
-//
-//        return users;
-//    }
 
     public List<User> getNotMembersByTeamId(String teamId) {
         Set<Integer> idsOfMembers = new HashSet<Integer>();
@@ -112,5 +94,23 @@ public class UserService {
         userTeam.setTeamId(Integer.parseInt(teamId));
 
         hibernateDAO.saveUserTeamIntoDB(userTeam);
+    }
+
+    public Team createNewTeam(String userName, Team newTeam) {
+        Team team = new Team();
+        team.setTeamName(newTeam.getTeamName());
+
+        hibernateDAO.saveTeamIntoDB(team);
+
+        User user = hibernateDAO.findUserByUsername(userName);
+
+        UserTeam userTeam = new UserTeam();
+        userTeam.setStatus("owner");
+        userTeam.setUserId(user.getUserId());
+        userTeam.setTeamId(team.getTeamId());
+
+        hibernateDAO.saveUserTeamIntoDB(userTeam);
+
+        return team;
     }
 }

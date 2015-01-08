@@ -46,9 +46,10 @@ public class TeamRestController {
         UserTeam userTeam = new UserTeam();
         userTeam.setStatus("owner");
         userTeam.setUserId(user.getUserId());
-        userTeam.setTeam(team);
+        userTeam.setTeamId(team.getTeamId());
+//        userTeam.setTeam(team);
 
-        team.getUsersTeams().add(userTeam);
+//        team.getUsersTeams().add(userTeam);
 
         userService.saveUserTeamIntoDB(userTeam);
 

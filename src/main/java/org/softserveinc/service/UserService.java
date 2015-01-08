@@ -54,16 +54,29 @@ public class UserService {
         return idsAndNames;
     }
 
+//    public List<User> getNotMembersByTeamId(String teamId) {
+//        Set<Integer> idsOfMembers = new HashSet<Integer>();
+//
+//        Team team = hibernateDAO.getTeamById(teamId);
+//        Set<UserTeam> userTeams = team.getUsersTeams();
+//        for (UserTeam userTeam : userTeams) {
+//            idsOfMembers.add(userTeam.getUserId());
+//        }
+//
+//        List<User> users = hibernateDAO.getUsersExceptMembers(idsOfMembers);
+//
+//        return users;
+//    }
+
     public List<User> getNotMembersByTeamId(String teamId) {
         Set<Integer> idsOfMembers = new HashSet<Integer>();
 
-        Team team = hibernateDAO.getTeamById(teamId);
-        Set<UserTeam> userTeams = team.getUsersTeams();
+        List<UserTeam> userTeams = hibernateDAO.getUserTeamsByTeamId(Integer.parseInt(teamId));
         for (UserTeam userTeam : userTeams) {
             idsOfMembers.add(userTeam.getUserId());
         }
 
-        List<User> users = hibernateDAO.getUsersExceptMembers(idsOfMembers);
+        List<User> users = hibernateDAO.getUsersExceptGivenUserIds(idsOfMembers);
 
         return users;
     }
@@ -75,14 +88,17 @@ public class UserService {
 
     public List<Team> findTeamsByUsername(String userName) {
         List<Team> teams = new ArrayList<Team>();
+        List<Integer> teamsIds = new ArrayList<Integer>();
 
         User user = hibernateDAO.findUserByUsername(userName);
         Integer userId = user.getUserId();
 
         List<UserTeam> userTeams = hibernateDAO.findUserTeamsByUserId(userId);
         for (UserTeam userTeam : userTeams) {
-            teams.add(userTeam.getTeam());
+            teamsIds.add(userTeam.getTeamId());
         }
+
+        teams = hibernateDAO.getTeamsByTeamIds(teamsIds);
 
         return teams;
     }
@@ -93,7 +109,7 @@ public class UserService {
         UserTeam userTeam = new UserTeam();
         userTeam.setStatus("invited");
         userTeam.setUserId(Integer.parseInt(userId));
-        userTeam.setTeam(team);
+        userTeam.setTeamId(Integer.parseInt(teamId));
 
         hibernateDAO.saveUserTeamIntoDB(userTeam);
     }

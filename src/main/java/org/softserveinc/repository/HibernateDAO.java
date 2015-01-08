@@ -98,15 +98,6 @@ public class HibernateDAO {
     public List<User> getUsersByUserIds(Collection<Integer> userIds) {
         Session session = getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(User.class);
-//        criteria.setProjection(Projections.property("userName"));
-
-//        for (Integer id : userIds) {
-//            criteria.add(Restrictions.eq("userId", id));
-//        }
-
-//        Integer [] arrayOfIds = new Integer[userIds.size()];
-//        userIds.toArray(arrayOfIds);
-
         criteria.add(Restrictions.in("userId", userIds));
 
         List<User> users = (List<User>) criteria.list();
@@ -114,6 +105,16 @@ public class HibernateDAO {
         return users;
     }
 
+    public List<Team> getTeamsByTeamIds(List<Integer> teamsIds) {
+        Session session = getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(Team.class);
+
+        criteria.add(Restrictions.in("teamId", teamsIds));
+
+        List<Team> teams = (List<Team>) criteria.list();
+
+        return teams;
+    }
 
     public Team getTeamById(String teamId) {
         Session session = getSessionFactory().getCurrentSession();
@@ -121,11 +122,11 @@ public class HibernateDAO {
         return team;
     }
 
-    public List<User> getUsersExceptMembers(Set<Integer> idsOfMembers) {
+    public List<User> getUsersExceptGivenUserIds(Set<Integer> userIds) {
         Session session = getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(User.class);
 
-        criteria.add(Restrictions.not(Restrictions.in("userId", idsOfMembers)));
+        criteria.add(Restrictions.not(Restrictions.in("userId", userIds)));
 
         List<User> users = (List<User>) criteria.list();
 
@@ -137,6 +138,16 @@ public class HibernateDAO {
         Session session = getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(UserTeam.class);
         criteria.add(Restrictions.eq("userId", userId));
+
+        List<UserTeam> userTeams = (List<UserTeam>) criteria.list();
+
+        return userTeams;
+    }
+
+    public List<UserTeam> getUserTeamsByTeamId(Integer teamId) {
+        Session session = getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(UserTeam.class);
+        criteria.add(Restrictions.eq("teamId", teamId));
 
         List<UserTeam> userTeams = (List<UserTeam>) criteria.list();
 

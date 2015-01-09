@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-
 @Controller
 public class UserController {
 
@@ -54,11 +53,8 @@ public class UserController {
         System.out.println("Team ID=" + team.getTeamId());
 
         UserTeam userTeam = new UserTeam();
-//        userTeam.setMember(true);
         userTeam.setUserId(user.getUserId());
-        userTeam.setTeam(team);
-
-        team.getUsersTeams().add(userTeam);
+        userTeam.setTeamId(team.getTeamId());
 
         userService.saveUserTeamIntoDB(userTeam);
 
@@ -96,10 +92,9 @@ public class UserController {
 
         if(Integer.parseInt(userId) > 0) {
             UserTeam userTeam = new UserTeam();
-//            userTeam.setMember(false);
             userTeam.setUserId(Integer.parseInt(userId));
-            userTeam.setTeam(team);
-//            userTeam.setStatus(userName);
+            userTeam.setTeamId(Integer.parseInt(teamId));
+            userTeam.setStatus("invited");
 
             userService.saveUserTeamIntoDB(userTeam);
         }

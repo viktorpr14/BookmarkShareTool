@@ -4,9 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.softserveinc.domain.Team;
 import org.softserveinc.domain.User;
-import org.softserveinc.domain.UserTeam;
 import org.softserveinc.service.UserService;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -24,34 +22,17 @@ public class TeamRestController {
     public String getTeamsByUserName(@PathVariable("username") String userName) {
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         return gson.toJson(userService.findTeamsByUsername(userName));
-//        return new Gson().toJson(userService.findTeamsByUsername(userName));
     }
 
     @RequestMapping(value = "/rest/team/{teamId}", method = RequestMethod.GET)
     public String getTeamById(@PathVariable("teamId") String teamId) {
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         return gson.toJson(userService.getTeamById(teamId));
-//        return new Gson().toJson(userService.getTeamById(teamId));
     }
 
     @RequestMapping(value = "/rest/createTeam/{username}", method = RequestMethod.POST)
     public String createNewTeam(@PathVariable("username") String userName, @RequestBody Team newTeam) {
-        Team team = new Team();
-        team.setTeamName(newTeam.getTeamName());
-
-        userService.saveTeamIntoDB(team);
-
-        User user = userService.findUserByUsername(userName);
-
-        UserTeam userTeam = new UserTeam();
-        userTeam.setStatus("owner");
-        userTeam.setUserId(user.getUserId());
-        userTeam.setTeam(team);
-
-        team.getUsersTeams().add(userTeam);
-
-        userService.saveUserTeamIntoDB(userTeam);
-
+        Team team = userService.createNewTeam(userName, newTeam);
         return new Gson().toJson(team.getTeamId());
     }
 

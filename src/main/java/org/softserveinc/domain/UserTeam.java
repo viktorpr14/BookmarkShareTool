@@ -11,9 +11,9 @@ import javax.persistence.*;
 public class UserTeam {
 
     private Integer userTeamId;
-//    private boolean isMember;
-    private Team team;
+//    private Team team;
     private Integer userId;
+    private Integer teamId;
     private String status;
 
     public UserTeam() {
@@ -30,15 +30,15 @@ public class UserTeam {
         this.userTeamId = userTeamId;
     }
 
-    @ManyToOne
-    @JoinColumn(name="teamId")
-    public Team getTeam() {
-        return team;
-    }
+//    @ManyToOne
+//    @JoinColumn(name="teamId")
+//    public Team getTeam() {
+//        return team;
+//    }
 
-    public void setTeam(Team team) {
-        this.team = team;
-    }
+//    public void setTeam(Team team) {
+//        this.team = team;
+//    }
 
     public Integer getUserId() {
         return userId;
@@ -48,13 +48,13 @@ public class UserTeam {
         this.userId = userId;
     }
 
-//    public boolean isMember() {
-//        return isMember;
-//    }
+    public Integer getTeamId() {
+        return teamId;
+    }
 
-//    public void setMember(boolean isMember) {
-//        this.isMember = isMember;
-//    }
+    public void setTeamId(Integer teamId) {
+        this.teamId = teamId;
+    }
 
     public String getStatus() {
         return status;

@@ -21,7 +21,7 @@ public class TeamRestController {
     @RequestMapping(value = "/rest/teams/{username}", method = RequestMethod.GET)
     public String getTeamsByUserName(@PathVariable("username") String userName) {
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        return gson.toJson(userService.findTeamsByUsername(userName));
+        return gson.toJson(userService.findTeamsWhereUserIsMemberOrOwnerByUsername(userName));
     }
 
     @RequestMapping(value = "/rest/invitations/{username}", method = RequestMethod.GET)

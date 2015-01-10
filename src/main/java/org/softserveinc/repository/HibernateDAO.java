@@ -60,6 +60,11 @@ public class HibernateDAO {
         session.update(user);
     }
 
+    public void updateUserTeamInDB(UserTeam userTeam) {
+        Session session = getSessionFactory().getCurrentSession();
+        session.update(userTeam);
+    }
+
     public void saveUserTeamIntoDB(UserTeam userTeam) {
         Session session = getSessionFactory().getCurrentSession();
         session.save(userTeam);
@@ -121,5 +126,21 @@ public class HibernateDAO {
         List<UserTeam> userTeams = (List<UserTeam>) criteria.list();
 
         return userTeams;
+    }
+
+    public List<UserTeam> getUserTeamsWithInvitationsOnlyByUserId(Integer userId) {
+        Session session = getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(UserTeam.class);
+        criteria.add(Restrictions.and(Restrictions.eq("userId", userId), Restrictions.eq("status", "invited")));
+
+        List<UserTeam> userTeams = (List<UserTeam>) criteria.list();
+
+        return  userTeams;
+    }
+
+    public UserTeam getUserTeamById(String userTeamId) {
+        Session session = getSessionFactory().getCurrentSession();
+        UserTeam userTeam = (UserTeam) session.get(UserTeam.class, Integer.parseInt(userTeamId));
+        return userTeam;
     }
 }

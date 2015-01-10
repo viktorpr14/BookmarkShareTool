@@ -85,6 +85,22 @@ public class UserService {
         return teams;
     }
 
+    public Map <Integer, Team> getInvitationsByUsername(String userName) {
+        Map <Integer, Team> invitations = new HashMap<Integer, Team>();
+
+        User user = hibernateDAO.findUserByUsername(userName);
+        Integer userId = user.getUserId();
+
+        List<UserTeam> userTeamsWithInvitations = hibernateDAO.getUserTeamsWithInvitationsOnlyByUserId(userId);
+        for (UserTeam userTeam : userTeamsWithInvitations) {
+
+            Team team =  hibernateDAO.getTeamById(userTeam.getTeamId().toString());
+            invitations.put(userTeam.getUserTeamId(), team);
+        }
+
+        return invitations;
+    }
+
     public void inviteUserToTeam(String teamId, String userId) {
         Team team = hibernateDAO.getTeamById(teamId);
 
@@ -113,4 +129,17 @@ public class UserService {
 
         return team;
     }
+
+    public void acceptInvitation(String userTeamId) {
+        UserTeam userTeam = hibernateDAO.getUserTeamById(userTeamId);
+        userTeam.setStatus("accepted");
+        hibernateDAO.updateUserTeamInDB(userTeam);
+    }
+
+    public void rejectedInvitation(String userTeamId) {
+        UserTeam userTeam = hibernateDAO.getUserTeamById(userTeamId);
+        userTeam.setStatus("rejected");
+        hibernateDAO.updateUserTeamInDB(userTeam);
+    }
+
 }

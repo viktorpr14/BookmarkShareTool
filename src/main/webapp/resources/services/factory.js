@@ -19,5 +19,15 @@ app.factory('teamFactory', function($http) {
     factory.inviteUserToTeam = function(teamId, userId) {
         $http.get('/rest/inviteUser/' + teamId + '/' + userId);
     };
+    factory.getInvitationsByUsername = function(userName) {
+        return $http.get('/rest/invitations/' + userName);
+    };
+    factory.acceptInvitation = function(userTeamId) {
+        $http.put('/rest/acceptInvitation/' + userTeamId);
+    };
+    factory.rejectInvitation = function(userTeamId) {
+        $http.put('/rest/rejectInvitation/' + userTeamId);
+    };
+
     return factory;
 });

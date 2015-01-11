@@ -17,7 +17,6 @@ public class Team {
     private Integer teamId;
     @Expose
     private String teamName;
-//    private Set<UserTeam> usersTeams = new HashSet<UserTeam>();
 
     public Team() {
 
@@ -26,11 +25,6 @@ public class Team {
     public Team(String teamName) {
         this.teamName = teamName;
     }
-
-//    public Team(String teamName, Set<UserTeam> usersTeams) {
-//        this.teamName = teamName;
-//        this.usersTeams = usersTeams;
-//    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -49,14 +43,4 @@ public class Team {
     public void setTeamName(String teamName) {
         this.teamName = teamName;
     }
-
-//    @Transient
-//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "team")
-//    public Set<UserTeam> getUsersTeams() {
-//        return usersTeams;
-//    }
-
-//    public void setUsersTeams(Set<UserTeam> usersTeams) {
-//        this.usersTeams = usersTeams;
-//    }
 }

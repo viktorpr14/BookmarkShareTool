@@ -4,6 +4,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.softserveinc.domain.Team;
 import org.softserveinc.domain.User;
@@ -12,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by vv on 01.12.2014.
@@ -60,6 +59,11 @@ public class HibernateDAO {
         session.update(user);
     }
 
+    public void updateUserTeamInDB(UserTeam userTeam) {
+        Session session = getSessionFactory().getCurrentSession();
+        session.update(userTeam);
+    }
+
     public void saveUserTeamIntoDB(UserTeam userTeam) {
         Session session = getSessionFactory().getCurrentSession();
         session.save(userTeam);
@@ -102,11 +106,14 @@ public class HibernateDAO {
         return users;
     }
 
-    public List<UserTeam> findUserTeamsByUserId(Integer userId) {
-
+    public List<UserTeam> findUserTeamsWhereUserIsMemberOrOwnerByUserId(Integer userId) {
         Session session = getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(UserTeam.class);
-        criteria.add(Restrictions.eq("userId", userId));
+
+        Criterion criterion1 = Restrictions.eq("userId", userId);
+        Criterion criterion2 = Restrictions.in("status", Arrays.asList("owner", "accepted"));
+
+        criteria.add(Restrictions.and(criterion1, criterion2));
 
         List<UserTeam> userTeams = (List<UserTeam>) criteria.list();
 
@@ -121,5 +128,21 @@ public class HibernateDAO {
         List<UserTeam> userTeams = (List<UserTeam>) criteria.list();
 
         return userTeams;
+    }
+
+    public List<UserTeam> getUserTeamsWithInvitationsOnlyByUserId(Integer userId) {
+        Session session = getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(UserTeam.class);
+        criteria.add(Restrictions.and(Restrictions.eq("userId", userId), Restrictions.eq("status", "invited")));
+
+        List<UserTeam> userTeams = (List<UserTeam>) criteria.list();
+
+        return  userTeams;
+    }
+
+    public UserTeam getUserTeamById(String userTeamId) {
+        Session session = getSessionFactory().getCurrentSession();
+        UserTeam userTeam = (UserTeam) session.get(UserTeam.class, Integer.parseInt(userTeamId));
+        return userTeam;
     }
 }

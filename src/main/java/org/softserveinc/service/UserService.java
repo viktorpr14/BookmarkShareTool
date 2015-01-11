@@ -68,14 +68,14 @@ public class UserService {
         return team;
     }
 
-    public List<Team> findTeamsByUsername(String userName) {
+    public List<Team> findTeamsWhereUserIsMemberOrOwnerByUsername(String userName) {
         List<Team> teams = new ArrayList<Team>();
         List<Integer> teamsIds = new ArrayList<Integer>();
 
         User user = hibernateDAO.findUserByUsername(userName);
         Integer userId = user.getUserId();
 
-        List<UserTeam> userTeams = hibernateDAO.findUserTeamsByUserId(userId);
+        List<UserTeam> userTeams = hibernateDAO.findUserTeamsWhereUserIsMemberOrOwnerByUserId(userId);
         for (UserTeam userTeam : userTeams) {
             teamsIds.add(userTeam.getTeamId());
         }
@@ -83,6 +83,22 @@ public class UserService {
         teams = hibernateDAO.getTeamsByTeamIds(teamsIds);
 
         return teams;
+    }
+
+    public Map <Integer, Team> getInvitationsByUsername(String userName) {
+        Map <Integer, Team> invitations = new HashMap<Integer, Team>();
+
+        User user = hibernateDAO.findUserByUsername(userName);
+        Integer userId = user.getUserId();
+
+        List<UserTeam> userTeamsWithInvitations = hibernateDAO.getUserTeamsWithInvitationsOnlyByUserId(userId);
+        for (UserTeam userTeam : userTeamsWithInvitations) {
+
+            Team team =  hibernateDAO.getTeamById(userTeam.getTeamId().toString());
+            invitations.put(userTeam.getUserTeamId(), team);
+        }
+
+        return invitations;
     }
 
     public void inviteUserToTeam(String teamId, String userId) {
@@ -113,4 +129,17 @@ public class UserService {
 
         return team;
     }
+
+    public void acceptInvitation(String userTeamId) {
+        UserTeam userTeam = hibernateDAO.getUserTeamById(userTeamId);
+        userTeam.setStatus("accepted");
+        hibernateDAO.updateUserTeamInDB(userTeam);
+    }
+
+    public void rejectedInvitation(String userTeamId) {
+        UserTeam userTeam = hibernateDAO.getUserTeamById(userTeamId);
+        userTeam.setStatus("rejected");
+        hibernateDAO.updateUserTeamInDB(userTeam);
+    }
+
 }

@@ -26,6 +26,11 @@ app.config(function($routeProvider) {
         {
             controller: 'NewTeamController',
             templateUrl: '/resources/partials/newTeam.html'
+        })
+        .when('/invitations/:username',
+        {
+            controller: 'InvitationsController',
+            templateUrl: '/resources/partials/invitations.html'
         });
 });
 

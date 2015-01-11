@@ -1,0 +1,10 @@
+<h3>Invitations</h3>
+
+<table>
+    <tr ng-repeat='(userTeamId, team) in invitations'>
+        <td>{{ team.teamName }}</td>
+        <td><button ng-click="acceptInvitation(userTeamId)" ng-disabled="team.disabled">Accept Invitation</button></td>
+        <td><button ng-click="rejectInvitation(userTeamId)" ng-disabled="team.disabled">Reject Invitation</button></td>
+
+    </tr>
+</table>

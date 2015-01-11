@@ -21,7 +21,13 @@ public class TeamRestController {
     @RequestMapping(value = "/rest/teams/{username}", method = RequestMethod.GET)
     public String getTeamsByUserName(@PathVariable("username") String userName) {
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        return gson.toJson(userService.findTeamsByUsername(userName));
+        return gson.toJson(userService.findTeamsWhereUserIsMemberOrOwnerByUsername(userName));
+    }
+
+    @RequestMapping(value = "/rest/invitations/{username}", method = RequestMethod.GET)
+    public String getInvitationsByUserName(@PathVariable("username") String userName) {
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        return gson.toJson(userService.getInvitationsByUsername(userName));
     }
 
     @RequestMapping(value = "/rest/team/{teamId}", method = RequestMethod.GET)
@@ -45,6 +51,16 @@ public class TeamRestController {
     @RequestMapping(value = "/rest/inviteUser/{teamId}/{userId}", method = RequestMethod.GET)
     public void inviteUserToTeam(@PathVariable("teamId") String teamId, @PathVariable("userId") String userId) {
         userService.inviteUserToTeam(teamId, userId);
+    }
+
+    @RequestMapping(value = "/rest/acceptInvitation/{userTeamId}", method = RequestMethod.PUT)
+    public void acceptInvitation(@PathVariable("userTeamId") String userTeamId) {
+        userService.acceptInvitation(userTeamId);
+    }
+
+    @RequestMapping(value = "/rest/rejectInvitation/{userTeamId}", method = RequestMethod.PUT)
+    public void rejectInvitation(@PathVariable("userTeamId") String userTeamId) {
+        userService.rejectedInvitation(userTeamId);
     }
 
 }

@@ -16,9 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
-/**
- * Created by vv on 01.12.2014.
- */
 @Repository
 @Transactional
 public class HibernateDAO {
@@ -110,7 +107,6 @@ public class HibernateDAO {
     public List<UserTeam> findUserTeamsWhereUserIsMemberOrOwnerByUserId(Integer userId) {
         Session session = getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(UserTeam.class);
-        criteria.add(Restrictions.eq("userId", userId));
 
         Criterion criterion1 = Restrictions.eq("userId", userId);
         Criterion criterion2 = Restrictions.in("status", Arrays.asList("owner", "accepted"));

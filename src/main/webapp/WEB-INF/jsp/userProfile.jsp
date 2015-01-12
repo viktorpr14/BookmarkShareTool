@@ -23,7 +23,9 @@
         <a href="#/" class="navigate">Home</a>
         <a href="#userProfile/${user.username}" class="navigate">User Profile</a>
         <a href="#/teams/${user.username}" class="navigate">Show Teams</a>
+        <a href="#/invitations/${user.username}" class="navigate">Show Invitations</a>
         <a href="#/newTeam/${user.username}" class="navigate">Create New Team</a>
+        <a href="#/bookmark/" class="navigate">Create New Bookmark</a>
     </div>
 
     <br/>

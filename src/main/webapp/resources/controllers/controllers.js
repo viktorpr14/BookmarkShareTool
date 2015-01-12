@@ -63,3 +63,37 @@ app.controller('NewTeamController', function($scope, $routeParams, $http, $locat
     }
 });
 
+
+app.controller('InvitationsController', function($scope, $routeParams, teamFactory) {
+    init();
+
+    function init() {
+        teamFactory.getInvitationsByUsername($routeParams.username).success(function(data) {
+            $scope.invitations = data;
+        });
+    }
+
+    $scope.acceptInvitation = function(userTeamId) {
+        //var buttonClass = '.' + userTeamId;
+        //$(buttonClass).attr('disabled', 'disabled');
+        $scope.invitations[userTeamId].disabled=true;
+        teamFactory.acceptInvitation(userTeamId);
+    }
+
+    $scope.rejectInvitation = function(userTeamId) {
+        //var buttonClass = '.' + userTeamId;
+        //$(buttonClass).attr('disabled', 'disabled');
+        $scope.invitations[userTeamId].disabled=true;
+        teamFactory.rejectInvitation(userTeamId);
+    }
+
+});
+
+app.controller('NewBookmarkController', function($scope, $http) {
+    $scope.createNewBookmark = function() {
+
+        $http.post('/rest/bookmarks/', $scope.bookmark)
+        }
+
+});
+

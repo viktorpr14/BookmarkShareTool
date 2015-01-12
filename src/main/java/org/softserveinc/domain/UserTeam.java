@@ -11,7 +11,6 @@ import javax.persistence.*;
 public class UserTeam {
 
     private Integer userTeamId;
-//    private Team team;
     private Integer userId;
     private Integer teamId;
     private String status;
@@ -29,16 +28,6 @@ public class UserTeam {
     public void setUserTeamId(Integer userTeamId) {
         this.userTeamId = userTeamId;
     }
-
-//    @ManyToOne
-//    @JoinColumn(name="teamId")
-//    public Team getTeam() {
-//        return team;
-//    }
-
-//    public void setTeam(Team team) {
-//        this.team = team;
-//    }
 
     public Integer getUserId() {
         return userId;

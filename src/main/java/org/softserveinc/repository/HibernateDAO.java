@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
+import org.softserveinc.domain.Bookmark;
 import org.softserveinc.domain.Team;
 import org.softserveinc.domain.User;
 import org.softserveinc.domain.UserTeam;
@@ -15,9 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
-/**
- * Created by vv on 01.12.2014.
- */
 @Repository
 @Transactional
 public class HibernateDAO {
@@ -144,5 +142,10 @@ public class HibernateDAO {
         Session session = getSessionFactory().getCurrentSession();
         UserTeam userTeam = (UserTeam) session.get(UserTeam.class, Integer.parseInt(userTeamId));
         return userTeam;
+    }
+
+    public void saveBookmarkIntoDB(Bookmark bookmark){
+        Session session = getSessionFactory().getCurrentSession();
+        session.save(bookmark);
     }
 }

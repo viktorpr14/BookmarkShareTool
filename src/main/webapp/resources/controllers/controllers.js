@@ -88,3 +88,12 @@ app.controller('InvitationsController', function($scope, $routeParams, teamFacto
     }
 
 });
+
+app.controller('NewBookmarkController', function($scope, $http) {
+    $scope.createNewBookmark = function() {
+
+        $http.post('/rest/bookmarks/', $scope.bookmark)
+        }
+
+});
+

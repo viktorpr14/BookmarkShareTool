@@ -31,6 +31,11 @@ app.config(function($routeProvider) {
         {
             controller: 'InvitationsController',
             templateUrl: '/resources/partials/invitations.html'
+        })
+        .when('/bookmark/',
+        {
+            controller: 'NewBookmarkController',
+            templateUrl: '/resources/partials/createBookmark.html'
         });
 });
 

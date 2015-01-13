@@ -1,18 +1,46 @@
-<table>
-    <tr>
-        <td>First Name</td>
-        <td id="firstName">{{ user.firstName }}</td>
-    </tr>
-    <tr>
-        <td>Last Name</td>
-        <td id="lastName">{{ user.lastName }}</td>
-    </tr>
-    <tr>
-        <td>Username</td>
-        <td id="userName">{{ user.username }}</td>
-    </tr>
-    <tr>
-        <td>Email</td>
-        <td id="email">{{ user.email }}</td>
-    </tr>
-</table>
+<div>
+
+    <div style="float: left">
+        <table>
+            <tr>
+                <td>First Name</td>
+                <td id="firstName">{{ user.firstName }}</td>
+            </tr>
+            <tr>
+                <td>Last Name</td>
+                <td id="lastName">{{ user.lastName }}</td>
+            </tr>
+            <tr>
+                <td>Username</td>
+                <td id="userName">{{ user.username }}</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td id="email">{{ user.email }}</td>
+            </tr>
+        </table>
+
+        <button ng-click="getBookmarksByUserId(user.userId)">show bookmarks</button>
+
+    </div>
+
+    <div id="showBookmarks" style="float: left; display: none; padding: 5px">
+        Search: <input type="text" ng-model="filterBookmarks">
+
+        <table border="1">
+            <tr>
+                <th>Bookmark ID</th>
+                <th>Bookmark Name</th>
+                <th>Bookmark Description</th>
+            </tr>
+            <tr ng-repeat="bookmark in bookmarks | filter:filterBookmarks | orderBy:'name'">
+                <td>{{ bookmark.bookmarkId }}</td>
+                <td>{{ bookmark.name }}</td>
+                <td>{{ bookmark.description }}</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+</div>

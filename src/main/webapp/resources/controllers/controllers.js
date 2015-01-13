@@ -25,13 +25,21 @@ app.controller('TeamProfileController', function($window, $scope, $routeParams, 
     $scope.getNotMembersByTeamId = function(teamId) {
         $('#invite').show();
         teamFactory.getNotMembersByTeamId(teamId).success(function(data) {
-            $scope.users = data;});
-    }
+            $scope.users = data;
+        });
+    };
 
     $scope.inviteUserToTeam = function(teamId, userId) {
         var buttonId = '#' + userId;
         $(buttonId).attr('disabled', 'disabled');
         teamFactory.inviteUserToTeam(teamId, userId);
+    };
+
+    $scope.getBookmarksByTeamId = function(teamId) {
+        $('#showBookmarks').show();
+        teamFactory.getBookmarksByTeamId(teamId).success(function(data) {
+            $scope.bookmarks = data;
+        });
     }
 
 });
@@ -45,6 +53,13 @@ app.controller('UserProfileController', function($scope, $routeParams, teamFacto
             $scope.user = data;
         });
     }
+
+    $scope.getBookmarksByUserId = function(userId) {
+        $('#showBookmarks').show();
+        teamFactory.getBookmarksByUserId(userId).success(function(data) {
+            $scope.bookmarks = data;
+        });
+    };
 
 });
 

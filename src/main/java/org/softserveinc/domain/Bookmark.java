@@ -17,6 +17,8 @@ public class Bookmark {
     private String path;
     private String description;
     private Date created;
+    private Integer userId;
+    private Integer teamId;
 
     public Bookmark() {
     }
@@ -77,5 +79,21 @@ public class Bookmark {
 
     public void setCreated(Date created) {
         this.created = created;
+    }
+
+    public Integer getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(Integer teamId) {
+        this.teamId = teamId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

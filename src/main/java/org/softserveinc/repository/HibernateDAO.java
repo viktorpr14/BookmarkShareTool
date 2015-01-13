@@ -148,4 +148,24 @@ public class HibernateDAO {
         Session session = getSessionFactory().getCurrentSession();
         session.save(bookmark);
     }
+
+    public List<Bookmark> getBookmarksByTeamId(String teamId) {
+        Session session = getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(Bookmark.class);
+        criteria.add(Restrictions.eq("teamId", Integer.parseInt(teamId)));
+
+        List<Bookmark> bookmarks = (List<Bookmark>) criteria.list();
+
+        return bookmarks;
+    }
+
+    public List<Bookmark> getBookmarksByUserId(String userId) {
+        Session session = getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(Bookmark.class);
+        criteria.add(Restrictions.eq("userId", Integer.parseInt(userId)));
+
+        List<Bookmark> bookmarks = (List<Bookmark>) criteria.list();
+
+        return bookmarks;
+    }
 }

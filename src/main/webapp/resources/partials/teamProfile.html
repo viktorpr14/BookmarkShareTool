@@ -15,18 +15,19 @@
 
         <br/>
         <button ng-click="getNotMembersByTeamId(team.teamId)">invite users</button>
+        <button ng-click="getBookmarksByTeamId(team.teamId)">show bookmarks</button>
 
     </div>
 
-    <div id="invite" style="float: right; display: none">
+    <div id="invite" style="float: left; display: none; padding: 5px">
             Search: <input type="text" ng-model="searchText">
 
-            <table>
+            <table border="1">
                 <tr>
-                    <td><h4>First Name</h4></td>
-                    <td><h4>Last Name</h4></td>
-                    <td><h4>Username</h4></td>
-                    <td><h4>Email</h4></td>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Username</th>
+                    <th>Email</th>
                 </tr>
                 <tr ng-repeat="user in users |  filter:searchText | orderBy:'firstName'">
                     <td>{{ user.firstName}}</td>
@@ -38,4 +39,24 @@
             </table>
 
     </div>
+
+    <div id="showBookmarks" style="float: left; display: none; padding: 5px">
+        Search: <input type="text" ng-model="filterBookmarks">
+
+        <table border="1">
+            <tr>
+                <th>Bookmark ID</th>
+                <th>Bookmark Name</th>
+                <th>Bookmark Description</th>
+            </tr>
+            <tr ng-repeat="bookmark in bookmarks | filter:filterBookmarks | orderBy:'name'">
+                <td>{{ bookmark.bookmarkId }}</td>
+                <td>{{ bookmark.name }}</td>
+                <td>{{ bookmark.description }}</td>
+            </tr>
+
+        </table>
+
+    </div>
+
 </div>

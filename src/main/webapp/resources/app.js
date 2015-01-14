@@ -1,8 +1,4 @@
-/**
- * Created by vv on 08.01.2015.
- */
-
-var app = angular.module('userApp', ['ngRoute', 'ngAnimate']);
+var app = angular.module('userApp', ['ngRoute', 'ngAnimate', 'angularTreeview']);
 
 
 app.config(function($routeProvider) {

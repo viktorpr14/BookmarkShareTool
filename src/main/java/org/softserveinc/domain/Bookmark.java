@@ -10,13 +10,13 @@ import java.sql.Date;
 @Entity
 @Table(name = "BOOKMARK")
 public class Bookmark {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer bookmarkId;
     private String name;
     @NotNull
     private String URL;
-    private String path;
     private String description;
-    private Date created;
 
     public Bookmark() {
     }
@@ -24,9 +24,7 @@ public class Bookmark {
     public Bookmark(String name, String URL, String path, String description, Date created) {
         this.name = name;
         this.URL = URL;
-        this.path = path;
         this.description = description;
-        this.created = created;
     }
 
     @Id
@@ -55,27 +53,11 @@ public class Bookmark {
         this.URL = URL;
     }
 
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
     }
 }

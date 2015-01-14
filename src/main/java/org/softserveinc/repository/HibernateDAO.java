@@ -6,13 +6,12 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
-import org.softserveinc.domain.Bookmark;
-import org.softserveinc.domain.Team;
-import org.softserveinc.domain.User;
-import org.softserveinc.domain.UserTeam;
+import org.softserveinc.domain.*;
+import org.softserveinc.util.ReferenceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.*;
 
@@ -144,8 +143,52 @@ public class HibernateDAO {
         return userTeam;
     }
 
-    public void saveBookmarkIntoDB(Bookmark bookmark){
+    public void saveBookmarkIntoDB(Bookmark bookmark, ReferenceType referenceType){
         Session session = getSessionFactory().getCurrentSession();
         session.save(bookmark);
+    }
+
+    public List<Bookmark> getBookmarksByTeamId(String teamId) {
+        Session session = getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(Bookmark.class);
+        criteria.add(Restrictions.eq("teamId", Integer.parseInt(teamId)));
+
+        List<Bookmark> bookmarks = (List<Bookmark>) criteria.list();
+
+        return bookmarks;
+    }
+
+    public List<Bookmark> getBookmarksByUserId(String userId) {
+        Session session = getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(Bookmark.class);
+        criteria.add(Restrictions.eq("userId", Integer.parseInt(userId)));
+
+        List<Bookmark> bookmarks = (List<Bookmark>) criteria.list();
+
+        return bookmarks;
+    }
+
+    public List<BookmarkReference> getReferenceByTeamId(String teamId) {
+        Session session = getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(BookmarkReference.class);
+        criteria.add(Restrictions.and(Restrictions.eq("referenceType", ReferenceType.TEAM),Restrictions.eq("referenceId", Integer.parseInt(teamId)) ));
+        List<BookmarkReference> bookmarkRefs = (List<BookmarkReference>) criteria.list();
+        return bookmarkRefs;
+    }
+
+    public List<Bookmark> getBookmarksByIds(Set<Integer> bookmarkIds) {
+        Session session = getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(Bookmark.class);
+        criteria.add(Restrictions.in("bookmarkId", bookmarkIds));
+        return (List<Bookmark>) criteria.list();
+
+    }
+
+    public List<BookmarkReference> getReferenceByUserId(String userId) {
+        Session session = getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(BookmarkReference.class);
+        criteria.add(Restrictions.and(Restrictions.eq("referenceType", ReferenceType.USER),Restrictions.eq("referenceId", Integer.parseInt(userId)) ));
+        List<BookmarkReference> bookmarkRefs = (List<BookmarkReference>) criteria.list();
+        return bookmarkRefs;
     }
 }

@@ -57,7 +57,7 @@ app.controller('UserProfileController', function($scope, $routeParams, teamFacto
     $scope.getBookmarksByUserId = function(userId) {
         $('#showBookmarks').show();
         teamFactory.getBookmarksByUserId(userId).success(function(data) {
-            $scope.bookmarks = data;
+            $scope.treeNode = data;
         });
     };
 
@@ -103,6 +103,7 @@ app.controller('InvitationsController', function($scope, $routeParams, teamFacto
     }
 
 });
+
 
 app.controller('NewBookmarkController', function($scope, $http) {
     $scope.createNewBookmark = function() {

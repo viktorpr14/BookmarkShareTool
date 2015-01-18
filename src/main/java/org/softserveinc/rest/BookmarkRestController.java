@@ -2,6 +2,7 @@ package org.softserveinc.rest;
 
 import com.google.gson.Gson;
 import org.softserveinc.domain.Bookmark;
+import org.softserveinc.domain.TreeNode;
 import org.softserveinc.service.BookmarkService;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,10 +26,16 @@ public class BookmarkRestController {
         return new Gson().toJson(bookmarks);
     }
 
+//    @RequestMapping(value = "/rest/user/bookmarks/{userId}", method = RequestMethod.GET)
+//    public String getBookmarksByUserId(@PathVariable("userId") String userId) {
+//        List<Bookmark> bookmarks = bookmarkService.getBookmarksByUserId(userId);
+//        return new Gson().toJson(bookmarks);
+//    }
+
     @RequestMapping(value = "/rest/user/bookmarks/{userId}", method = RequestMethod.GET)
     public String getBookmarksByUserId(@PathVariable("userId") String userId) {
-        List<Bookmark> bookmarks = bookmarkService.getBookmarksByUserId(userId);
-        return new Gson().toJson(bookmarks);
+        TreeNode treeNode = bookmarkService.getBookmarksByUserId(userId);
+        return new Gson().toJson(treeNode);
     }
 
 }

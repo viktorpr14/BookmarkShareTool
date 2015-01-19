@@ -37,6 +37,7 @@
     <!-- App libs -->
     <script src="/resources/app.js"></script>
     <script src="/resources/controllers/controllers.js"></script>
+    <script src="/resources/directives/directives.js"></script>
     <script src="/resources/services/factory.js"></script>
 
 </body>

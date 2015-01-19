@@ -43,6 +43,9 @@
         </table>
 -->
         <collection collection="treeNode.listOfTreeNodes"></collection>
+        <ul ng-repeat="bookmark in treeNode.listOfBookmarks" style="list-style: none">
+            <li><a class="bookmarkName" href="{{bookmark.URL}}" target="_blank">{{ bookmark.name }}</a></li>
+        </ul>
 
     </div>
 

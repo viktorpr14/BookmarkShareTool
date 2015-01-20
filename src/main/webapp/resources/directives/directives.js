@@ -26,7 +26,8 @@ app.directive('member', function($compile) {
                 element.append("<collection collection='member.listOfTreeNodes'></collection>" +
                     "<ul ng-repeat='bookmark in member.listOfBookmarks' style='list-style: none'>" +
                         "<li>" +
-                            "<a class='bookmarkName' href='{{bookmark.URL}}' target='_blank'>{{bookmark.name}}</a>" +
+                            "<a ng-if='bookmark.name'  class='bookmarkName' href='{{bookmark.URL}}' target='_blank'>{{bookmark.name}}</a>" +
+                            "<a ng-if='!bookmark.name' class='bookmarkName' href='{{bookmark.URL}}' target='_blank'>{{bookmark.URL}} </a>" +
                         "</li>" +
                     "</ul>");
                 $compile(element.contents())(scope)

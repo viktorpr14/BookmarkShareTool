@@ -9,7 +9,7 @@ app.directive('collection', function() {
         scope: {
             collection: '='
         },
-        template: "<ul><member ng-repeat='member in collection' member='member'>{{ member.folderName }}</member></ul>"
+        template: "<ul><member ng-repeat='member in collection' member='member'></member></ul>"
     }
 });
 
@@ -20,10 +20,15 @@ app.directive('member', function($compile) {
         scope: {
             member: '='
         },
-        template: "<li>{{member.folderName}}</li>",
+        template: "<li class='folderName' style='list-style: none'>{{member.folderName}}</li>",
         link: function(scope, element, attrs) {
             if (angular.isArray(scope.member.listOfTreeNodes)) {
-                element.append("<collection collection='member.listOfTreeNodes'></collection>");
+                element.append("<collection collection='member.listOfTreeNodes'></collection>" +
+                    "<ul ng-repeat='bookmark in member.listOfBookmarks' style='list-style: none'>" +
+                        "<li>" +
+                            "<a class='bookmarkName' href='{{bookmark.URL}}' target='_blank'>{{bookmark.name}}</a>" +
+                        "</li>" +
+                    "</ul>");
                 $compile(element.contents())(scope)
             }
         }

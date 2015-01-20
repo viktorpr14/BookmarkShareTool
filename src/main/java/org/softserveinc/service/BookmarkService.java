@@ -51,9 +51,9 @@ public class BookmarkService {
         TreeNode mainTreeNode = new TreeNode();
         mainTreeNode.setFolderName("USER");
         mainTreeNode.setListOfTreeNodes(new ArrayList<TreeNode>());
-        mainTreeNode.setBookmarkIds(new ArrayList<String>());
+        mainTreeNode.setListOfBookmarks(new ArrayList<Bookmark>());
 
-        Map<Integer, Bookmark> idsAndBookmarks = new HashMap<Integer, Bookmark>();
+        Map<Integer, Bookmark> mapOfIdsAndBookmarks = new HashMap<Integer, Bookmark>();
         List<String> pathAndIds = new ArrayList<String>();
 
         List<BookmarkReference> bookmarkReferences = hibernateDAO.getReferenceByUserId(userId);
@@ -67,7 +67,7 @@ public class BookmarkService {
 
         List<Bookmark> bookmarks = hibernateDAO.getBookmarksByIds(bookmarkIds);
         for (Bookmark bookmark : bookmarks) {
-            idsAndBookmarks.put(bookmark.getBookmarkId(), bookmark);
+            mapOfIdsAndBookmarks.put(bookmark.getBookmarkId(), bookmark);
         }
 
         //get tree of the folders
@@ -75,7 +75,8 @@ public class BookmarkService {
             String path = bookmarkReference.getPath();
 
             if(path == null) {
-                mainTreeNode.getBookmarkIds().add(bookmarkReference.getBookmarkId().toString());
+                Bookmark bookmark = mapOfIdsAndBookmarks.get(bookmarkReference.getBookmarkId());
+                mainTreeNode.getListOfBookmarks().add(bookmark);
             } else {
                 String pathAndId = path + ":" + bookmarkReference.getBookmarkId();
                 pathAndIds.add(pathAndId);
@@ -86,34 +87,38 @@ public class BookmarkService {
 
         for (String pathAndId : pathAndIds) {
             String path = pathAndId.substring(0, pathAndId.indexOf(":"));
-            List<String> foldersInner = Arrays.asList(path.split("/"));
+            List<String> chainOfFolders = Arrays.asList(path.split("/"));
             Integer bookmarkId = Integer.parseInt(pathAndId.substring(pathAndId.indexOf(":") + 1));
 
-            buildTree(foldersInner, mainTreeNode, bookmarkId);
+            buildTree(chainOfFolders, mainTreeNode, bookmarkId, mapOfIdsAndBookmarks);
         }
 
         return mainTreeNode;
     }
 
-    private Boolean buildTree(List<String> folders, TreeNode parentTreeNode, Integer bookmarkId) {
+    private Boolean buildTree(List<String> chainOfFolders, TreeNode parentTreeNode, Integer bookmarkId, Map<Integer, Bookmark> mapOfIdsAndBookmarks) {
         boolean flag = true;
-        List<String> foldersInner = new ArrayList<String>(folders);
-        String folder = folders.get(0);
+        List<String> innerChainOfFolders = new ArrayList<String>(chainOfFolders);
+        String folder = chainOfFolders.get(0);
         List<TreeNode> parentTreeNodes = parentTreeNode.getListOfTreeNodes();
 
         for (TreeNode treeNode : parentTreeNodes) {
 
             if(treeNode.getFolderName().equals(folder)) {
-                foldersInner.remove(0);
+                innerChainOfFolders.remove(0);
 
-                if(foldersInner.size() > 0) {
-                    flag = buildTree(foldersInner, treeNode, bookmarkId);
+                if(innerChainOfFolders.size() > 0) {
+                    flag = buildTree(innerChainOfFolders, treeNode, bookmarkId, mapOfIdsAndBookmarks);
                 } else {
-                    TreeNode nestedTreeNode = new TreeNode();
-                    nestedTreeNode.setBookmarkIds(new ArrayList<String>());
-                    nestedTreeNode.getBookmarkIds().add(bookmarkId.toString());
+//                    TreeNode nestedTreeNode = new TreeNode();
+//                    nestedTreeNode.setListOfBookmarkIds(new ArrayList<String>());
+//                    nestedTreeNode.getListOfBookmarkIds().add(bookmarkId.toString());
+//
+//                    treeNode.getListOfTreeNodes().add(nestedTreeNode);
+                    //treeNode.getListOfBookmarkIds().add(bookmarkId.toString());
 
-                    treeNode.getListOfTreeNodes().add(nestedTreeNode);
+                    Bookmark bookmark = mapOfIdsAndBookmarks.get(bookmarkId);
+                    treeNode.getListOfBookmarks().add(bookmark);
 
                     return false;
                 }
@@ -121,33 +126,38 @@ public class BookmarkService {
         }
 
         if(flag) {
-            createParallelBranch(foldersInner, parentTreeNode, bookmarkId);
+            createParallelBranch(innerChainOfFolders, parentTreeNode, bookmarkId, mapOfIdsAndBookmarks);
         }
 
         flag = false;
         return flag;
     }
 
-    private void createParallelBranch(List<String> folders, TreeNode parentTreeNode, Integer bookmarkId) {
-        List<String> foldersInner = new ArrayList<String>(folders);
-        String folder = folders.get(0);
+    private void createParallelBranch(List<String> chainOfFolders, TreeNode parentTreeNode, Integer bookmarkId, Map<Integer, Bookmark> mapOfIdsAndBookmarks) {
+        List<String> innerChainOfFolders = new ArrayList<String>(chainOfFolders);
+        String folder = chainOfFolders.get(0);
 
         TreeNode treeNode = new TreeNode();
         treeNode.setFolderName(folder);
         treeNode.setListOfTreeNodes(new ArrayList<TreeNode>());
-        treeNode.setBookmarkIds(new ArrayList<String>());
+        treeNode.setListOfBookmarks(new ArrayList<Bookmark>());
 
         parentTreeNode.getListOfTreeNodes().add(treeNode);
 
-        foldersInner.remove(0);
-        if(foldersInner.size() > 0) {
-            createParallelBranch(foldersInner, treeNode, bookmarkId);
+        innerChainOfFolders.remove(0);
+        if(innerChainOfFolders.size() > 0) {
+            createParallelBranch(innerChainOfFolders, treeNode, bookmarkId, mapOfIdsAndBookmarks);
         } else  {
-            TreeNode nestedTreeNode = new TreeNode();
-            nestedTreeNode.setBookmarkIds(new ArrayList<String>());
-            nestedTreeNode.getBookmarkIds().add(bookmarkId.toString());
+//            TreeNode nestedTreeNode = new TreeNode();
+//            nestedTreeNode.setListOfBookmarkIds(new ArrayList<String>());
+//            nestedTreeNode.getListOfBookmarkIds().add(bookmarkId.toString());
+//
+//            treeNode.getListOfTreeNodes().add(nestedTreeNode);
+            //treeNode.getListOfBookmarkIds().add(bookmarkId.toString());
 
-            treeNode.getListOfTreeNodes().add(nestedTreeNode);
+            Bookmark bookmark = mapOfIdsAndBookmarks.get(bookmarkId);
+            treeNode.getListOfBookmarks().add(bookmark);
+
         }
     }
 

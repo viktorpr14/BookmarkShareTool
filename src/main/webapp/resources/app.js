@@ -1,4 +1,4 @@
-var app = angular.module('userApp', ['ngRoute', 'ngAnimate', 'angularTreeview']);
+var app = angular.module('userApp', ['ngRoute', 'ngAnimate']);
 
 
 app.config(function($routeProvider) {

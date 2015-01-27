@@ -2,12 +2,17 @@
  * Created by vv on 19.01.2015.
  */
 
-.bookmarkName {
+.bookmark {
   background: url(/resources/img/file.png) no-repeat;
   padding-left: 15px;
 }
 
-.folderName {
+.openedFolder {
   background: url(/resources/img/folder.png) no-repeat;
+  padding-left: 15px;
+}
+
+.closedFolder {
+  background: url(/resources/img/folder-closed.png) no-repeat;
   padding-left: 15px;
 }

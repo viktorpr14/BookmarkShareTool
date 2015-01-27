@@ -10,7 +10,6 @@
     <script src="/resources/js/angular.js"></script>
     <script src="/resources/js/angular-route.js"></script>
     <script src="/resources/js/angular-animation.js"></script>
-    <script src="/resources/js/angular.treeview.min.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
 
 </head>

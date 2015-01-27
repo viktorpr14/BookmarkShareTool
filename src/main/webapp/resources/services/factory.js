@@ -31,7 +31,7 @@ app.factory('teamFactory', function($http) {
     factory.getBookmarksByTeamId = function(teamId) {
         return $http.get('/rest/team/bookmarks/' + teamId);
     };
-    factory.getBookmarksByUserId = function(userId) {
+    factory.getTreeOfBookmarksByUserId = function(userId) {
         return $http.get('/rest/user/bookmarks/' + userId);
     };
 

@@ -33,8 +33,8 @@ public class BookmarkRestController {
 //    }
 
     @RequestMapping(value = "/rest/user/bookmarks/{userId}", method = RequestMethod.GET)
-    public String getBookmarksByUserId(@PathVariable("userId") String userId) {
-        TreeNode treeNode = bookmarkService.getBookmarksByUserId(userId);
+    public String getTreeOfBookmarksByUserId(@PathVariable("userId") String userId) {
+        TreeNode treeNode = bookmarkService.getTreeOfBookmarksByUserId(userId);
         return new Gson().toJson(treeNode);
     }
 

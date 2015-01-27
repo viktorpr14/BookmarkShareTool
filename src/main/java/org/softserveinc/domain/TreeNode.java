@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class TreeNode {
     private String folderName;
-    private List<Bookmark> listOfBookmarks;
+    private Bookmark bookmark;
     private List<TreeNode> listOfTreeNodes;
 
     public TreeNode() {
@@ -22,12 +22,12 @@ public class TreeNode {
         this.folderName = folderName;
     }
 
-    public List<Bookmark> getListOfBookmarks() {
-        return listOfBookmarks;
+    public Bookmark getBookmark() {
+        return bookmark;
     }
 
-    public void setListOfBookmarks(List<Bookmark> listOfBookmarks) {
-        this.listOfBookmarks = listOfBookmarks;
+    public void setBookmark(Bookmark bookmark) {
+        this.bookmark = bookmark;
     }
 
     public List<TreeNode> getListOfTreeNodes() {

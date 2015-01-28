@@ -23,6 +23,7 @@ public class BookmarkService {
         hibernateDAO.saveBookmarkIntoDB(bookmark,ReferenceType.USER);
     }
 
+/*
     public List<Bookmark> getBookmarksByTeamId(String teamId) {
         List<BookmarkReference> bookmarkReferences = hibernateDAO.getReferenceByTeamId(teamId);
         Set<Integer> bookmarkIds= new HashSet<>();
@@ -32,8 +33,36 @@ public class BookmarkService {
         List<Bookmark> bookmarks = hibernateDAO.getBookmarksByIds(bookmarkIds);
         return bookmarks;
     }
+*/
+
+    public TreeNode getTreeOfBookmarksByTeamId(String teamId) {
+        TreeNode mainTreeNode = new TreeNode();
+        mainTreeNode.setFolderName("TEAM");
+        mainTreeNode.setListOfTreeNodes(new ArrayList<TreeNode>());
+
+        List<BookmarkReference> bookmarkReferences = hibernateDAO.getReferenceByTeamId(teamId);
+        if(bookmarkReferences.size() > 0) {
+            mainTreeNode = buildTreeOfBookmarks(bookmarkReferences);
+        }
+
+        return mainTreeNode;
+}
+
 
     public TreeNode getTreeOfBookmarksByUserId(String userId) {
+        TreeNode mainTreeNode = new TreeNode();
+        mainTreeNode.setFolderName("USER");
+        mainTreeNode.setListOfTreeNodes(new ArrayList<TreeNode>());
+
+        List<BookmarkReference> bookmarkReferences = hibernateDAO.getReferenceByUserId(userId);
+        if(bookmarkReferences.size() > 0) {
+            mainTreeNode = buildTreeOfBookmarks(bookmarkReferences);
+        }
+
+        return mainTreeNode;
+    }
+
+    private TreeNode buildTreeOfBookmarks(List<BookmarkReference> bookmarkReferences) {
         Set<Integer> bookmarkIds= new HashSet<>();
 
         TreeNode mainTreeNode = new TreeNode();
@@ -44,10 +73,10 @@ public class BookmarkService {
         List<String> pathAndIds = new ArrayList<String>();
 
         //return empty tree if there are no bookmarks fo user
-        List<BookmarkReference> bookmarkReferences = hibernateDAO.getReferenceByUserId(userId);
-        if(bookmarkReferences.size() == 0) {
-            return mainTreeNode;
-        }
+//        List<BookmarkReference> bookmarkReferences = hibernateDAO.getReferenceByUserId(userId);
+//        if(bookmarkReferences.size() == 0) {
+//            return mainTreeNode;
+//        }
 
         for (BookmarkReference bookmarkReference : bookmarkReferences) {
             bookmarkIds.add(bookmarkReference.getBookmarkId());

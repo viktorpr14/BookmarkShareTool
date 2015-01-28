@@ -20,17 +20,19 @@ public class BookmarkRestController {
 
     }
 
+/*
     @RequestMapping(value = "/rest/team/bookmarks/{teamId}", method = RequestMethod.GET)
     public String getBookmarksByTeamId(@PathVariable("teamId") String teamId) {
         List<Bookmark> bookmarks = bookmarkService.getBookmarksByTeamId(teamId);
         return new Gson().toJson(bookmarks);
     }
+*/
 
-//    @RequestMapping(value = "/rest/user/bookmarks/{userId}", method = RequestMethod.GET)
-//    public String getBookmarksByUserId(@PathVariable("userId") String userId) {
-//        List<Bookmark> bookmarks = bookmarkService.getBookmarksByUserId(userId);
-//        return new Gson().toJson(bookmarks);
-//    }
+    @RequestMapping(value = "/rest/team/bookmarks/{teamId}", method = RequestMethod.GET)
+    public String getTreeOfBookmarksByTeamId(@PathVariable("teamId") String teamId) {
+        TreeNode treeNode = bookmarkService.getTreeOfBookmarksByTeamId(teamId);
+        return new Gson().toJson(treeNode);
+    }
 
     @RequestMapping(value = "/rest/user/bookmarks/{userId}", method = RequestMethod.GET)
     public String getTreeOfBookmarksByUserId(@PathVariable("userId") String userId) {

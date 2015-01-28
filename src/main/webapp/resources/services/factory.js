@@ -28,10 +28,10 @@ app.factory('teamFactory', function($http) {
     factory.rejectInvitation = function(userTeamId) {
         $http.put('/rest/rejectInvitation/' + userTeamId);
     };
-    factory.getBookmarksByTeamId = function(teamId) {
+    factory.getTreeOfBookmarksByTeamId = function(teamId) {
         return $http.get('/rest/team/bookmarks/' + teamId);
     };
-    factory.getBookmarksByUserId = function(userId) {
+    factory.getTreeOfBookmarksByUserId = function(userId) {
         return $http.get('/rest/user/bookmarks/' + userId);
     };
 

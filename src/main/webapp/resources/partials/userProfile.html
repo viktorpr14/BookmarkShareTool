@@ -20,34 +20,13 @@
             </tr>
         </table>
 
-        <button ng-click="getBookmarksByUserId(user.userId)">show bookmarks</button>
+        <button ng-click="getTreeOfBookmarksByUserId(user.userId)">show bookmarks</button>
 
     </div>
 
     <div id="showBookmarks" style="float: left; display: none; padding: 5px">
-<!--
-        Search: <input type="text" ng-model="filterBookmarks">
-
-        <table border="1">
-            <tr>
-                <th>Bookmark ID</th>
-                <th>Bookmark Name</th>
-                <th>Bookmark Description</th>
-            </tr>
-            <tr ng-repeat="bookmark in bookmarks | filter:filterBookmarks | orderBy:'name'">
-                <td>{{ bookmark.bookmarkId }}</td>
-                <td>{{ bookmark.name }}</td>
-                <td>{{ bookmark.description }}</td>
-            </tr>
-
-        </table>
--->
         <ul>
             <collection collection="treeNode.listOfTreeNodes"></collection>
-        </ul>
-
-        <ul ng-repeat="bookmark in treeNode.listOfBookmarks" style="list-style: none">
-            <li><a class="bookmark" href="{{bookmark.URL}}" target="_blank">{{ bookmark.name }}</a></li>
         </ul>
 
     </div>

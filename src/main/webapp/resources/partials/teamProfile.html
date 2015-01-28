@@ -15,14 +15,14 @@
 
         <br/>
         <button ng-click="getNotMembersByTeamId(team.teamId)">invite users</button>
-        <button ng-click="getBookmarksByTeamId(team.teamId)">show bookmarks</button>
+        <button ng-click="getTreeOfBookmarksByTeamId(team.teamId)">show bookmarks</button>
 
     </div>
 
     <div id="invite" style="float: left; display: none; padding: 5px">
             Search: <input type="text" ng-model="searchText">
 
-            <table border="1">
+            <table>
                 <tr>
                     <th>First Name</th>
                     <th>Last Name</th>
@@ -40,6 +40,7 @@
 
     </div>
 
+<!--
     <div id="showBookmarks" style="float: left; display: none; padding: 5px">
         Search: <input type="text" ng-model="filterBookmarks">
 
@@ -56,6 +57,14 @@
             </tr>
 
         </table>
+
+    </div>
+-->
+
+    <div id="showBookmarks" style="float: left; display: none; padding: 5px">
+        <ul>
+            <collection collection="treeNode.listOfTreeNodes"></collection>
+        </ul>
 
     </div>
 

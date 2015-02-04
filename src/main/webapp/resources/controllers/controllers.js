@@ -35,10 +35,10 @@ app.controller('TeamProfileController', function($window, $scope, $routeParams, 
         teamFactory.inviteUserToTeam(teamId, userId);
     };
 
-    $scope.getBookmarksByTeamId = function(teamId) {
+    $scope.getTreeOfBookmarksByTeamId = function(teamId) {
         $('#showBookmarks').show();
-        teamFactory.getBookmarksByTeamId(teamId).success(function(data) {
-            $scope.bookmarks = data;
+        teamFactory.getTreeOfBookmarksByTeamId(teamId).success(function(data) {
+            $scope.treeNode = data;
         });
     }
 
@@ -54,9 +54,9 @@ app.controller('UserProfileController', function($scope, $routeParams, teamFacto
         });
     }
 
-    $scope.getBookmarksByUserId = function(userId) {
+    $scope.getTreeOfBookmarksByUserId = function(userId) {
         $('#showBookmarks').show();
-        teamFactory.getBookmarksByUserId(userId).success(function(data) {
+        teamFactory.getTreeOfBookmarksByUserId(userId).success(function(data) {
             $scope.treeNode = data;
         });
     };

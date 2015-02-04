@@ -143,9 +143,10 @@ public class HibernateDAO {
         return userTeam;
     }
 
-    public void saveBookmarkIntoDB(Bookmark bookmark, ReferenceType referenceType){
+    public Integer saveBookmarkIntoDB(Bookmark bookmark){
         Session session = getSessionFactory().getCurrentSession();
-        session.save(bookmark);
+       return (Integer)session.save(bookmark);
+
     }
 
     public List<Bookmark> getBookmarksByTeamId(String teamId) {
@@ -190,5 +191,10 @@ public class HibernateDAO {
         criteria.add(Restrictions.and(Restrictions.eq("referenceType", ReferenceType.USER),Restrictions.eq("referenceId", Integer.parseInt(userId)) ));
         List<BookmarkReference> bookmarkRefs = (List<BookmarkReference>) criteria.list();
         return bookmarkRefs;
+    }
+
+    public void saveBookmarkReference(BookmarkReference bookmarkReference) {
+        Session session = getSessionFactory().getCurrentSession();
+        session.save(bookmarkReference);
     }
 }

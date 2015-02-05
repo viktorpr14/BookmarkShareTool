@@ -1,13 +1,13 @@
 package org.softserveinc.rest;
 
 import com.google.gson.Gson;
-import org.softserveinc.domain.Bookmark;
-import org.softserveinc.domain.TreeNode;
+import org.softserveinc.DTO.BookmarkDTO;
+import org.softserveinc.util.TreeNode;
 import org.softserveinc.service.BookmarkService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
-import java.util.List;
+
 
 @RestController
 public class BookmarkRestController {
@@ -15,9 +15,8 @@ public class BookmarkRestController {
     private BookmarkService bookmarkService;
 
     @RequestMapping(value = "/rest/bookmark", method = RequestMethod.POST)
-    public void createNewBookmark(@RequestBody Bookmark bookmark) {
-        bookmarkService.saveBookmark(bookmark);
-
+    public void createNewBookmark(@RequestBody BookmarkDTO bookmarkDTO) {
+        bookmarkService.saveBookmark(bookmarkDTO);
     }
 
 /*

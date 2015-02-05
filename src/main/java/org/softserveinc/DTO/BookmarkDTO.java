@@ -1,39 +1,24 @@
-package org.softserveinc.domain;
+package org.softserveinc.DTO;
 
 import org.springframework.stereotype.Component;
 
-import javax.persistence.*;
-import java.sql.Date;
-
 @Component
-@Entity
-@Table(name = "BOOKMARK")
-public class Bookmark {
+public class BookmarkDTO {
 
-    private Integer bookmarkId;
     private String name;
     private String URL;
+    private String path;
     private String description;
 
-    public Bookmark() {
-    }
-
-    public Bookmark(String name, String URL, String description) {
+    public BookmarkDTO(String name, String URL, String path, String description) {
         this.name = name;
         this.URL = URL;
+        this.path = path;
         this.description = description;
     }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public Integer getBookmarkId() {
-        return bookmarkId;
+    public BookmarkDTO() {
     }
 
-    public void setBookmarkId(Integer bookmarkId) {
-        this.bookmarkId = bookmarkId;
-    }
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -41,7 +26,7 @@ public class Bookmark {
     public void setName(String name) {
         this.name = name;
     }
-    @Column(nullable = false,name = "URL")
+
     public String getURL() {
         return URL;
     }
@@ -49,7 +34,15 @@ public class Bookmark {
     public void setURL(String URL) {
         this.URL = URL;
     }
-    @Column(name = "description")
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -57,4 +50,6 @@ public class Bookmark {
     public void setDescription(String description) {
         this.description = description;
     }
+
+
 }

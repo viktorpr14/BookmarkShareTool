@@ -1,8 +1,9 @@
 package org.softserveinc.service;
 
+import org.softserveinc.DTO.BookmarkDTO;
 import org.softserveinc.domain.Bookmark;
 import org.softserveinc.domain.BookmarkReference;
-import org.softserveinc.domain.TreeNode;
+import org.softserveinc.util.TreeNode;
 import org.softserveinc.domain.User;
 import org.softserveinc.repository.HibernateDAO;
 import org.softserveinc.util.ReferenceType;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.*;
 
 
@@ -18,9 +20,13 @@ public class BookmarkService {
     @Autowired
     HibernateDAO hibernateDAO;
 
-    public void saveBookmark(Bookmark bookmark) {
+    public void saveBookmark(BookmarkDTO bookmarkDTO) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        hibernateDAO.saveBookmarkIntoDB(bookmark,ReferenceType.USER);
+        Bookmark bookmark= new Bookmark(bookmarkDTO.getName(),bookmarkDTO.getURL(),bookmarkDTO.getDescription());
+        Integer bookmarkID= hibernateDAO.saveBookmarkIntoDB(bookmark);
+        //TODO make possibility to add bookmark with reference to team
+        BookmarkReference bookmarkReference = new BookmarkReference(bookmarkID, bookmarkDTO.getPath(), new Date(System.currentTimeMillis()),user.getUserId(),ReferenceType.USER);
+        hibernateDAO.saveBookmarkReference(bookmarkReference);
     }
 
 /*

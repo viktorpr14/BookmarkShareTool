@@ -1,4 +1,6 @@
-package org.softserveinc.domain;
+package org.softserveinc.util;
+
+import org.softserveinc.domain.Bookmark;
 
 import java.util.List;
 

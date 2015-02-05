@@ -23,6 +23,17 @@ public class BookmarkReference {
     @Enumerated(EnumType.STRING)
     private ReferenceType referenceType;
 
+    public BookmarkReference() {
+    }
+
+    public BookmarkReference(Integer bookmarkId, String path, Date created, Integer referenceId, ReferenceType referenceType) {
+        this.bookmarkId = bookmarkId;
+        this.path = path;
+        this.created = created;
+        this.referenceId = referenceId;
+        this.referenceType = referenceType;
+    }
+
     public Integer getBookmarkReferenceId() {
         return bookmarkReferenceId;
     }

@@ -80,7 +80,9 @@ public class UserService {
             teamsIds.add(userTeam.getTeamId());
         }
 
-        teams = hibernateDAO.getTeamsByTeamIds(teamsIds);
+        if(!teamsIds.isEmpty()) {
+            teams = hibernateDAO.getTeamsByTeamIds(teamsIds);
+        }
 
         return teams;
     }

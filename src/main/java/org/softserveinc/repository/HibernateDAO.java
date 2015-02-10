@@ -92,6 +92,12 @@ public class HibernateDAO {
         return team;
     }
 
+    public User getUserById(String localUserId) {
+        Session session = getSessionFactory().getCurrentSession();
+        User user = (User) session.get(User.class, Integer.parseInt(localUserId));
+        return user;
+    }
+
     public List<User> getUsersExceptGivenUserIds(Set<Integer> userIds) {
         Session session = getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(User.class);
@@ -197,4 +203,25 @@ public class HibernateDAO {
         Session session = getSessionFactory().getCurrentSession();
         session.save(bookmarkReference);
     }
+
+    public void saveProviderUserLocalUser(ProviderUserLocalUser providerUserLocalUser) {
+        Session session = getSessionFactory().getCurrentSession();
+        session.save(providerUserLocalUser);
+    }
+
+    public ProviderUserLocalUser getProviderUserLocalUserByProvIdAndProvUserId(String providerId, String providerUserId) {
+        Session session = getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(ProviderUserLocalUser.class);
+        criteria.add(Restrictions.and(Restrictions.eq("providerId", providerId),Restrictions.eq("providerUserId", providerUserId) ));
+        List<ProviderUserLocalUser> listOfProviderUserLocalUser = (List<ProviderUserLocalUser>) criteria.list();
+
+        ProviderUserLocalUser providerUserLocalUser = null;
+
+        if(!listOfProviderUserLocalUser.isEmpty()) {
+            providerUserLocalUser = listOfProviderUserLocalUser.get(0);
+        }
+
+        return providerUserLocalUser;
+    }
+
 }

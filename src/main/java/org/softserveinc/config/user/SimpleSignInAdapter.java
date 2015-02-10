@@ -1,5 +1,6 @@
 package org.softserveinc.config.user;
 
+import org.softserveinc.domain.ProviderUserLocalUser;
 import org.softserveinc.domain.User;
 import org.softserveinc.domain.UserRole;
 import org.softserveinc.service.UserService;
@@ -31,16 +32,39 @@ public final class SimpleSignInAdapter implements SignInAdapter {
         Google google =(Google) connection.getApi();
         Person person = google.plusOperations().getGoogleProfile();
 
-        //save user into DB
-        User user = new User();
-        user.setEmail(person.getAccountEmail());
-        user.setFirstName(person.getGivenName());
-        user.setLastName(person.getFamilyName());
-        user.setRoles(new HashSet<UserRole>(){{add(new UserRole(2, "ROLE_USER"));}});
-        user.setUsername(person.getGivenName() + person.getFamilyName());
-        user.setPassword("0000");
+        User user = null;
 
-        userService.saveUserIntoDB(user);
+        String providerId = connection.getKey().getProviderId();
+        String providerUserId = connection.getKey().getProviderUserId();
+
+        //Check if provider user already exists
+        ProviderUserLocalUser providerUserLocalUser =  userService.getProviderUserLocalUserByProvIdAndProvUserId(providerId, providerUserId);
+
+        if (!(providerUserLocalUser == null)) {
+            user = userService.getUserById(providerUserLocalUser.getLocalUserId());
+        }
+
+        if (user == null) {
+
+            //save user into DB
+            user = new User();
+            user.setEmail(person.getAccountEmail());
+            user.setFirstName(person.getGivenName());
+            user.setLastName(person.getFamilyName());
+            user.setRoles(new HashSet<UserRole>() {{add(new UserRole(2, "ROLE_USER"));}});
+            user.setUsername(person.getGivenName() + person.getFamilyName());
+            user.setPassword("0000");
+
+            userService.saveUserIntoDB(user);
+
+            //save relationship between provider user and local user
+            ProviderUserLocalUser providerUserLocalUserInner = new ProviderUserLocalUser();
+            providerUserLocalUserInner.setProviderId(providerId);
+            providerUserLocalUserInner.setProviderUserId(providerUserId);
+            providerUserLocalUserInner.setLocalUserId(user.getUserId().toString());
+
+            userService.saveProviderUserLocalUser(providerUserLocalUserInner);
+        }
 
         SecurityContextHolder.getContext().setAuthentication(
                 new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));

@@ -16,6 +16,10 @@ import java.util.HashSet;
 
 /**
  * Created by vv on 03.02.2015.
+ *
+ * Adapter that bridges between a ProviderSignInController and a application-specific user sign-in service.
+ * Invoked at the end of a provider sign-in attempt to sign-in the local user account associated with the provider user account.
+ *
  */
 public final class SimpleSignInAdapter implements SignInAdapter {
 

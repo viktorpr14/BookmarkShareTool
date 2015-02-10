@@ -5,6 +5,8 @@ import java.io.Serializable;
 
 /**
  * Created by vv on 04.02.2015.
+ *
+ * Compound primary key for UserConnection
  */
 @Embeddable
 public class UserConnectionId implements Serializable{

@@ -29,6 +29,8 @@ import org.springframework.social.google.connect.GoogleConnectionFactory;
 
 /**
  * Created by vv on 03.02.2015.
+ *
+ * Spring Social Configuration.
  */
 @Configuration
 public class SocialConfig {

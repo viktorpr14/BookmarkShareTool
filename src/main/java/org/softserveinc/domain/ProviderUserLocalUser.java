@@ -6,8 +6,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
- * Created by vv on 09.02.2015.
- *
  * Entity for storing relationship between provider user and local user into db
  */
 @Entity

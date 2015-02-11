@@ -6,8 +6,6 @@ import org.springframework.social.connect.ConnectionSignUp;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Created by vv on 04.02.2015.
- *
  * Simple little {@link ConnectionSignUp} command that allocates new userIds in memory.
  * Doesn't bother storing a user record in any local database, since this quickstart just stores the user id in a cookie.
  */

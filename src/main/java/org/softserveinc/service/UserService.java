@@ -10,9 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-/**
- * Created by vv on 01.12.2014.
- */
 @Service
 public class UserService {
 

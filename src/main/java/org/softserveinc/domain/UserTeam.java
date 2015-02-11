@@ -3,7 +3,7 @@ package org.softserveinc.domain;
 import javax.persistence.*;
 
 /**
- * Created by vv on 09.12.2014.
+ * Entity for storing relationship between users and teams into db
  */
 
 @Entity

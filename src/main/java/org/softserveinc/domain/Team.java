@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by vv on 05.12.2014.
+ * Entity for storing teams into db
  */
 @Entity
 @Table(name = "TEAM")

@@ -5,8 +5,6 @@ import javax.persistence.Entity;
 import java.math.BigInteger;
 
 /**
- * Created by vv on 03.02.2015.
- *
  * Entity for storing connection with social provider into db
  */
 @Entity

@@ -31,5 +31,12 @@
             </form>
         </div>
 
+        <div>
+            <form action="signin/facebook" method="POST">
+                <button type="submit">Sign in with Facebook</button>
+                <input type="hidden" name="scope" value="email" />
+            </form>
+        </div>
+
     </body>
 </html>

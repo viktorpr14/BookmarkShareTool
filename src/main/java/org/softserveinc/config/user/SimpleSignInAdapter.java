@@ -8,6 +8,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.web.SignInAdapter;
+import org.springframework.social.facebook.api.Facebook;
+import org.springframework.social.facebook.api.FacebookProfile;
 import org.springframework.social.google.api.Google;
 import org.springframework.social.google.api.plus.Person;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -22,7 +24,8 @@ public final class SimpleSignInAdapter implements SignInAdapter {
 
     private UserService userService;
 
-    public SimpleSignInAdapter() {}
+    public SimpleSignInAdapter() {
+    }
 
     public SimpleSignInAdapter(UserService userService) {
         this.userService = userService;
@@ -30,16 +33,14 @@ public final class SimpleSignInAdapter implements SignInAdapter {
 
     public String signIn(String localUserId, Connection<?> connection, NativeWebRequest request) {
 
-        Google google =(Google) connection.getApi();
-        Person person = google.plusOperations().getGoogleProfile();
-
         User user = null;
 
         String providerId = connection.getKey().getProviderId();
         String providerUserId = connection.getKey().getProviderUserId();
 
         //Check if provider user already exists
-        ProviderUserLocalUser providerUserLocalUser =  userService.getProviderUserLocalUserByProvIdAndProvUserId(providerId, providerUserId);
+        ProviderUserLocalUser providerUserLocalUser =
+                userService.getProviderUserLocalUserByProvIdAndProvUserId(providerId, providerUserId);
 
         if (!(providerUserLocalUser == null)) {
             user = userService.getUserById(providerUserLocalUser.getLocalUserId());
@@ -47,30 +48,67 @@ public final class SimpleSignInAdapter implements SignInAdapter {
 
         if (user == null) {
 
-            //save user into DB
-            user = new User();
-            user.setEmail(person.getAccountEmail());
-            user.setFirstName(person.getGivenName());
-            user.setLastName(person.getFamilyName());
-            user.setRoles(new HashSet<UserRole>() {{add(new UserRole(2, "ROLE_USER"));}});
-            user.setUsername(person.getGivenName() + person.getFamilyName());
-            user.setPassword("0000");
+            if (connection.getApi() instanceof Google) {
+                user = createUserFromGoogleProfile(connection, providerId, providerUserId);
+            }
 
-            userService.saveUserIntoDB(user);
-
-            //save relationship between provider user and local user
-            ProviderUserLocalUser providerUserLocalUserInner = new ProviderUserLocalUser();
-            providerUserLocalUserInner.setProviderId(providerId);
-            providerUserLocalUserInner.setProviderUserId(providerUserId);
-            providerUserLocalUserInner.setLocalUserId(user.getUserId().toString());
-
-            userService.saveProviderUserLocalUser(providerUserLocalUserInner);
+            if (connection.getApi() instanceof Facebook) {
+                user = createUserFromFacebookProfile(connection, providerId, providerUserId);
+            }
         }
 
         SecurityContextHolder.getContext().setAuthentication(
                 new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
 
         return null;
+    }
+
+    private User createUserFromGoogleProfile(Connection<?> connection, String providerId, String providerUserId) {
+        Google google = (Google) connection.getApi();
+        Person person = google.plusOperations().getGoogleProfile();
+
+        User user = new User();
+        user.setEmail(person.getAccountEmail());
+        user.setFirstName(person.getGivenName());
+        user.setLastName(person.getFamilyName());
+        user.setRoles(new HashSet<UserRole>() {{add(new UserRole(2, "ROLE_USER"));}});
+        user.setUsername(person.getGivenName() + person.getFamilyName());
+        user.setPassword("0000");
+
+        userService.saveUserIntoDB(user);
+
+        saveProviderUserLocalUserIntoDB(providerId, providerUserId, user.getUserId().toString());
+
+        return user;
+    }
+
+    private User createUserFromFacebookProfile(Connection<?> connection, String providerId, String providerUserId) {
+        Facebook facebook = (Facebook) connection.getApi();
+        FacebookProfile facebookProfile = facebook.userOperations().getUserProfile();
+
+        User user = new User();
+        user.setEmail(facebookProfile.getEmail());
+        user.setFirstName(facebookProfile.getFirstName());
+        user.setLastName(facebookProfile.getLastName());
+        user.setRoles(new HashSet<UserRole>() {{add(new UserRole(2, "ROLE_USER"));}});
+        user.setUsername(facebookProfile.getFirstName() + facebookProfile.getLastName());
+        user.setPassword("0000");
+
+        userService.saveUserIntoDB(user);
+
+        saveProviderUserLocalUserIntoDB(providerId, providerUserId, user.getUserId().toString());
+
+        return user;
+    }
+
+    private void saveProviderUserLocalUserIntoDB(String providerId, String providerUserId, String userId) {
+        ProviderUserLocalUser providerUserLocalUserInner = new ProviderUserLocalUser();
+
+        providerUserLocalUserInner.setProviderId(providerId);
+        providerUserLocalUserInner.setProviderUserId(providerUserId);
+        providerUserLocalUserInner.setLocalUserId(userId);
+
+        userService.saveProviderUserLocalUser(providerUserLocalUserInner);
     }
 
 }

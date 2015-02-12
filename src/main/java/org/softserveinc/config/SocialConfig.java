@@ -24,6 +24,8 @@ import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 import org.springframework.social.connect.support.ConnectionFactoryRegistry;
 import org.springframework.social.connect.web.ProviderSignInController;
+import org.springframework.social.facebook.api.Facebook;
+import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.google.api.Google;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
 
@@ -49,8 +51,15 @@ public class SocialConfig {
     @Bean
     public ConnectionFactoryLocator connectionFactoryLocator() {
         ConnectionFactoryRegistry registry = new ConnectionFactoryRegistry();
-        registry.addConnectionFactory(new GoogleConnectionFactory(environment.getProperty("google.clientId"),
+
+        registry.addConnectionFactory(new GoogleConnectionFactory(
+                environment.getProperty("google.clientId"),
                 environment.getProperty("google.clientSecret")));
+
+        registry.addConnectionFactory(new FacebookConnectionFactory(
+                environment.getProperty("facebook.clientId"),
+                environment.getProperty("facebook.clientSecret")));
+
         return registry;
     }
 
@@ -83,6 +92,16 @@ public class SocialConfig {
     @Scope(value="request", proxyMode=ScopedProxyMode.INTERFACES)
     public Google google() {
         return connectionRepository().getPrimaryConnection(Google.class).getApi();
+    }
+
+    /**
+     * A proxy to a request-scoped object representing the current user's primary Facebook account.
+     * @throws NotConnectedException if the user is not connected to facebook.
+     */
+    @Bean
+    @Scope(value="request", proxyMode=ScopedProxyMode.INTERFACES)
+    public Facebook facebook() {
+        return connectionRepository().getPrimaryConnection(Facebook.class).getApi();
     }
 
     /**

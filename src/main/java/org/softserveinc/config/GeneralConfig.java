@@ -4,7 +4,6 @@ import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.apache.commons.dbcp.BasicDataSource;
 
 @Configuration
 public class GeneralConfig {

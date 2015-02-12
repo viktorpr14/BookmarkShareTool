@@ -1,4 +1,3 @@
-
 package org.softserveinc.config;
 
 import javax.inject.Inject;
@@ -8,11 +7,12 @@ import org.softserveinc.config.user.SimpleConnectionSignUp;
 import org.softserveinc.config.user.SimpleSignInAdapter;
 import org.softserveinc.domain.User;
 import org.softserveinc.service.UserService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.core.env.Environment;
+//import org.springframework.core.env.Environment;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.encrypt.Encryptors;
@@ -38,27 +38,30 @@ public class SocialConfig {
     @Inject
     private UserService userService;
 
-    @Inject
-    private Environment environment;
+//    @Inject
+//    private Environment environment;
 
     @Inject
     private DataSource dataSource;
+
+    @Inject
+    private ConnectionFactoryLocator connectionFactoryLocator;
 
     /**
      * When a new provider is added to the app, register its {@link ConnectionFactory} here.
      * @see GoogleConnectionFactory
      */
     @Bean
-    public ConnectionFactoryLocator connectionFactoryLocator() {
+    public ConnectionFactoryLocator connectionFactoryLocator(
+            @Value ("${google.clientId}") String googleClientId,
+            @Value ("${google.clientSecret}") String googleClientSecret,
+            @Value ("${facebook.clientId}") String facebookClientId,
+            @Value ("${facebook.clientSecret}") String facebookClientSecret) {
+
         ConnectionFactoryRegistry registry = new ConnectionFactoryRegistry();
 
-        registry.addConnectionFactory(new GoogleConnectionFactory(
-                environment.getProperty("google.clientId"),
-                environment.getProperty("google.clientSecret")));
-
-        registry.addConnectionFactory(new FacebookConnectionFactory(
-                environment.getProperty("facebook.clientId"),
-                environment.getProperty("facebook.clientSecret")));
+        registry.addConnectionFactory(new GoogleConnectionFactory(googleClientId, googleClientSecret));
+        registry.addConnectionFactory(new FacebookConnectionFactory(facebookClientId, facebookClientSecret));
 
         return registry;
     }
@@ -69,7 +72,7 @@ public class SocialConfig {
     @Bean
     public UsersConnectionRepository usersConnectionRepository() {
         JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource,
-                connectionFactoryLocator(), Encryptors.noOpText());
+                connectionFactoryLocator, Encryptors.noOpText());
         repository.setConnectionSignUp(new SimpleConnectionSignUp());
         return repository;
     }
@@ -109,7 +112,7 @@ public class SocialConfig {
      */
     @Bean
     public ProviderSignInController providerSignInController() {
-        ProviderSignInController controller = new ProviderSignInController(connectionFactoryLocator(),
+        ProviderSignInController controller = new ProviderSignInController(connectionFactoryLocator,
                 usersConnectionRepository(), simpleSignInAdapter());
         return controller;
     }

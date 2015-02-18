@@ -4,7 +4,9 @@ import org.softserveinc.domain.ProviderUserLocalUser;
 import org.softserveinc.domain.User;
 import org.softserveinc.domain.UserRole;
 import org.softserveinc.service.UserService;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.web.SignInAdapter;
@@ -38,6 +40,16 @@ public final class SimpleSignInAdapter implements SignInAdapter {
         String providerId = connection.getKey().getProviderId();
         String providerUserId = connection.getKey().getProviderUserId();
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if(!(authentication instanceof AnonymousAuthenticationToken)) {
+
+            user = (User) authentication.getPrincipal();
+            linkUserWithSocialProvider(user, providerId, providerUserId);
+
+            return  null;
+        }
+
         //Check if provider user already exists
         ProviderUserLocalUser providerUserLocalUser =
                 userService.getProviderUserLocalUserByProvIdAndProvUserId(providerId, providerUserId);
@@ -67,15 +79,21 @@ public final class SimpleSignInAdapter implements SignInAdapter {
         Google google = (Google) connection.getApi();
         Person person = google.plusOperations().getGoogleProfile();
 
-        User user = new User();
-        user.setEmail(person.getAccountEmail());
-        user.setFirstName(person.getGivenName());
-        user.setLastName(person.getFamilyName());
-        user.setRoles(new HashSet<UserRole>() {{add(new UserRole(2, "ROLE_USER"));}});
-        user.setUsername(person.getGivenName() + person.getFamilyName());
-        user.setPassword("0000");
+        //Check if user with the same email already exists
+        User user = userService.getUserByEmail(person.getAccountEmail());
 
-        userService.saveUserIntoDB(user);
+        if(user == null) {
+
+            user = new User();
+            user.setEmail(person.getAccountEmail());
+            user.setFirstName(person.getGivenName());
+            user.setLastName(person.getFamilyName());
+            user.setRoles(new HashSet<UserRole>() {{add(new UserRole(2, "ROLE_USER"));}});
+            user.setUsername(person.getGivenName() + person.getFamilyName());
+            user.setPassword("0000");
+
+            userService.saveUserIntoDB(user);
+        }
 
         saveProviderUserLocalUserIntoDB(providerId, providerUserId, user.getUserId().toString());
 
@@ -86,15 +104,21 @@ public final class SimpleSignInAdapter implements SignInAdapter {
         Facebook facebook = (Facebook) connection.getApi();
         FacebookProfile facebookProfile = facebook.userOperations().getUserProfile();
 
-        User user = new User();
-        user.setEmail(facebookProfile.getEmail());
-        user.setFirstName(facebookProfile.getFirstName());
-        user.setLastName(facebookProfile.getLastName());
-        user.setRoles(new HashSet<UserRole>() {{add(new UserRole(2, "ROLE_USER"));}});
-        user.setUsername(facebookProfile.getFirstName() + facebookProfile.getLastName());
-        user.setPassword("0000");
+        //Check if user with the same email already exists
+        User user = userService.getUserByEmail(facebookProfile.getEmail());
 
-        userService.saveUserIntoDB(user);
+        if(user == null) {
+
+            user = new User();
+            user.setEmail(facebookProfile.getEmail());
+            user.setFirstName(facebookProfile.getFirstName());
+            user.setLastName(facebookProfile.getLastName());
+            user.setRoles(new HashSet<UserRole>() {{add(new UserRole(2, "ROLE_USER"));}});
+            user.setUsername(facebookProfile.getFirstName() + facebookProfile.getLastName());
+            user.setPassword("0000");
+
+            userService.saveUserIntoDB(user);
+        }
 
         saveProviderUserLocalUserIntoDB(providerId, providerUserId, user.getUserId().toString());
 
@@ -109,6 +133,20 @@ public final class SimpleSignInAdapter implements SignInAdapter {
         providerUserLocalUserInner.setLocalUserId(userId);
 
         userService.saveProviderUserLocalUser(providerUserLocalUserInner);
+    }
+
+    private void linkUserWithSocialProvider(User user, String providerId, String providerUserId) {
+        ProviderUserLocalUser providerUserLocalUser =
+                userService.getProviderUserLocalUserByProvIdAndProvUserId(providerId, providerUserId);
+
+        if (!(providerUserLocalUser == null)) {
+
+            providerUserLocalUser.setLocalUserId(user.getUserId().toString());
+            userService.updateProviderUserLocalUser(providerUserLocalUser);
+
+        } else {
+            saveProviderUserLocalUserIntoDB(providerId, providerUserId, user.getUserId().toString());
+        }
     }
 
 }

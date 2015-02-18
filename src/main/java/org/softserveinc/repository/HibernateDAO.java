@@ -76,6 +76,16 @@ public class HibernateDAO {
         return users;
     }
 
+    public List<User> getUsersByEmail(String email) {
+        Session session = getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(User.class);
+        criteria.add(Restrictions.eq("email", email));
+
+        List<User> users = (List<User>) criteria.list();
+
+        return users;
+    }
+
     public List<Team> getTeamsByTeamIds(List<Integer> teamsIds) {
         Session session = getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(Team.class);
@@ -209,6 +219,11 @@ public class HibernateDAO {
         session.save(providerUserLocalUser);
     }
 
+    public void updateProviderUserLocalUser(ProviderUserLocalUser providerUserLocalUser) {
+        Session session = getSessionFactory().getCurrentSession();
+        session.update(providerUserLocalUser);
+    }
+
     public ProviderUserLocalUser getProviderUserLocalUserByProvIdAndProvUserId(String providerId, String providerUserId) {
         Session session = getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(ProviderUserLocalUser.class);
@@ -224,4 +239,13 @@ public class HibernateDAO {
         return providerUserLocalUser;
     }
 
+    public List<ProviderUserLocalUser> getProviderUserLocalUserByLocalUserId(String userId) {
+        Session session = getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(ProviderUserLocalUser.class);
+        criteria.add(Restrictions.eq("localUserId", userId));
+
+        List<ProviderUserLocalUser> listOfProviderUserLocalUser = (List<ProviderUserLocalUser>) criteria.list();
+
+        return listOfProviderUserLocalUser;
+    }
 }

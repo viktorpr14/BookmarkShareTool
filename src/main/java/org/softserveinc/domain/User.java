@@ -17,25 +17,25 @@ import java.util.Set;
 @Table(name = "USER")
 public class User implements UserDetails {
 
-    private Integer userId;
+    protected Integer userId;
 
     @NotNull
-    private String firstName;
+    protected String firstName;
 
     @NotNull
-    private String lastName;
+    protected String lastName;
 
     @NotNull
     @Column(unique = true)
-    private String username;
+    protected String username;
 
     @Column
-    private String email;
+    protected String email;
 
     @NotNull
-    private String password;
+    protected String password;
 
-    private Set<UserRole> roles = new HashSet<UserRole>();
+    protected Set<UserRole> roles = new HashSet<UserRole>();
 
     private List<? extends GrantedAuthority> authorities;
 

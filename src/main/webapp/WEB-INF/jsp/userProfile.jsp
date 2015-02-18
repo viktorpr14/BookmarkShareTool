@@ -18,7 +18,7 @@
 
     <!-- Navigation links -->
     <div id="navbar">
-        <span class="pos_fixed"><h3>username: ${user.username}</h3></span>
+        <div><span style="float: right"><h3>username: ${user.username}</h3></span></div>
         <a href="#/" class="navbar-brand">Bookmarks Share Tool</a>
         <br/><br/>
         <a href="#/" class="navigate">Home</a>

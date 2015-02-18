@@ -1,9 +1,6 @@
 package org.softserveinc.service;
 
-import org.softserveinc.domain.ProviderUserLocalUser;
-import org.softserveinc.domain.Team;
-import org.softserveinc.domain.User;
-import org.softserveinc.domain.UserTeam;
+import org.softserveinc.domain.*;
 import org.softserveinc.repository.HibernateDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +20,30 @@ public class UserService {
     public User findUserByUsername(String username) {
         return hibernateDAO.findUserByUsername(username);
     }
+
+    public UserView getUserViewByUsername(String userName) {
+        User user = hibernateDAO.findUserByUsername(userName);
+        UserView userView = null;
+
+        if(user != null) {
+            userView = new UserView(user);
+
+            List<ProviderUserLocalUser> listOfProviderUserLocalUser = hibernateDAO.getProviderUserLocalUserByLocalUserId(user.getUserId().toString());
+            for (ProviderUserLocalUser providerUserLocalUser : listOfProviderUserLocalUser) {
+
+                if(providerUserLocalUser.getProviderId().equals("google")) {
+                    userView.setLinkedWithGoogle(true);
+                }
+
+                if(providerUserLocalUser.getProviderId().equals("facebook")) {
+                    userView.setLinkedWithFacebook(true);
+                }
+            }
+        }
+
+        return userView;
+    }
+
 
     public void saveTeamIntoDB(Team team) {
         hibernateDAO.saveTeamIntoDB(team);
@@ -155,4 +176,20 @@ public class UserService {
         User user = hibernateDAO.getUserById(localUserId);
         return user;
     }
+
+    public User getUserByEmail(String email) {
+        User user = null;
+        List<User> users = hibernateDAO.getUsersByEmail(email);
+
+        if(!users.isEmpty()) {
+            user = users.get(0);
+        }
+
+        return user;
+    }
+
+    public void updateProviderUserLocalUser(ProviderUserLocalUser providerUserLocalUser) {
+        hibernateDAO.updateProviderUserLocalUser(providerUserLocalUser);
+    }
+
 }

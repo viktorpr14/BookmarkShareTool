@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-//import org.springframework.core.env.Environment;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.encrypt.Encryptors;
@@ -37,9 +36,6 @@ public class SocialConfig {
 
     @Inject
     private UserService userService;
-
-//    @Inject
-//    private Environment environment;
 
     @Inject
     private DataSource dataSource;
@@ -114,6 +110,7 @@ public class SocialConfig {
     public ProviderSignInController providerSignInController() {
         ProviderSignInController controller = new ProviderSignInController(connectionFactoryLocator,
                 usersConnectionRepository(), simpleSignInAdapter());
+        controller.setPostSignInUrl("/userProfile");
         return controller;
     }
 

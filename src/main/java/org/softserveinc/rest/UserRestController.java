@@ -8,16 +8,15 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 
 @RestController
-@RequestMapping("/rest/userProfile")
 public class UserRestController {
     @Inject
     private UserService userService;
 
-    @RequestMapping(value = "/{username}", method = RequestMethod.GET)
+    @RequestMapping(value = "/rest/userProfile/{username}", method = RequestMethod.GET)
     public String getUser(@PathVariable("username") String userName) {
         if(SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")){
             return"Please login";
         }
-        return new Gson().toJson(userService.findUserByUsername(userName));
+        return new Gson().toJson(userService.getUserViewByUsername(userName));
     }
 }

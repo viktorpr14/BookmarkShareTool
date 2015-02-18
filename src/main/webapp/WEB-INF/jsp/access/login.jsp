@@ -24,7 +24,7 @@
 
         <div>
             <form action="signin/google" method="POST">
-                <button type="submit" class="btn btn-large btn-primary">Sign in with Google</button>
+                <input type="image"  src="/resources/img/signinWithGoogle.png" alt="Submit" style="width: 200px; height: 32px"/>
                 <input type="hidden" name="scope" value="email https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/tasks https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/latitude.all.best" />
                 <input type="hidden" name="request_visible_actions" value="http://schemas.google.com/AddActivity http://schemas.google.com/BuyActivity http://schemas.google.com/CheckInActivity http://schemas.google.com/CommentActivity http://schemas.google.com/CreateActivity http://schemas.google.com/DiscoverActivity http://schemas.google.com/ListenActivity http://schemas.google.com/ReserveActivity http://schemas.google.com/ReviewActivity http://schemas.google.com/WantActivity"/>
                 <input type="hidden" name="access_type" value="offline"/>
@@ -33,7 +33,7 @@
 
         <div>
             <form action="signin/facebook" method="POST">
-                <button type="submit">Sign in with Facebook</button>
+                <input type="image"  src="/resources/img/signinWithFacebook.png" alt="Submit" style="width: 200px; height: 32px"/>
                 <input type="hidden" name="scope" value="email" />
             </form>
         </div>
